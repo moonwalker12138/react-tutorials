@@ -1,26 +1,72 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { UrlInfo } from "./Constants/UrlInfo";
+import { Routes, Route } from "react-router";
+import { BrowserRouter } from "react-router-dom";
+import { Bootcamp } from "./Bootstrap/Bootcamp";
+import Home from "./Home/Home";
+import { Error } from "./Error";
+import { UseRefDemo } from "./Hooks/useRef/UseRefDemo";
+import { getCSSValue } from "./Utils";
+import { UseImperativeHandleDemo } from "./Hooks/useImperativeHandle/UseImperativeHandleDemo";
+import { UseContextDemo } from "./Hooks/useContext/UseContextDemo";
+import { UseMemoDemo } from "./Hooks/useMemo/UseMemoDemo";
+import { UseCallbackDemo } from "./Hooks/useCallback/UseCallbackDemo";
+import { UseLayoutEffectDemo } from "./Hooks/useLayoutEffect/UseLayoutEffectDemo";
+import { UseReducerDemo } from "./Hooks/useReducer/UseReducerDemo";
+import { UseDebugValueDemo } from "./Hooks/useDebugValue/useDebugValueDemo";
+import { UseStateDemo } from "./Hooks/useState/UseStateDemo";
+import { UseEffectDemo } from "./Hooks/useEffect/UseEffectDemo";
+import { CustomHooksDemo } from "./Hooks/customHooks/CustomHooksDemo";
+import { Header } from "./Shared/Header";
+import { Sidebar } from "./Shared/Sidebar";
+import React from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <>
+            <BrowserRouter>
+                <Header />
+                <Routes>
+                    <Route path={UrlInfo.Home} element={<Home />} />
+                    <Route path={UrlInfo.UseRef} element={<UseRefDemo />} />
+                    <Route
+                        path={UrlInfo.UseImperativeHandle}
+                        element={<UseImperativeHandleDemo />}
+                    />
+                    <Route
+                        path={UrlInfo.UseContext}
+                        element={<UseContextDemo />}
+                    />
+                    <Route path={UrlInfo.UseMemo} element={<UseMemoDemo />} />
+                    <Route
+                        path={UrlInfo.UseCallback}
+                        element={<UseCallbackDemo />}
+                    />
+                    <Route
+                        path={UrlInfo.UseLayoutEffect}
+                        element={<UseLayoutEffectDemo />}
+                    />
+                    <Route
+                        path={UrlInfo.UseReducer}
+                        element={<UseReducerDemo />}
+                    />
+                    <Route
+                        path={UrlInfo.UseDebugValue}
+                        element={<UseDebugValueDemo />}
+                    />
+                    <Route path={UrlInfo.UseState} element={<UseStateDemo />} />
+                    <Route
+                        path={UrlInfo.UseEffect}
+                        element={<UseEffectDemo />}
+                    />
+                    <Route
+                        path={UrlInfo.CustomHooks}
+                        element={<CustomHooksDemo />}
+                    />
+                    <Route path={"*"} element={<Error />} />
+                </Routes>
+            </BrowserRouter>
+        </>
+    );
 }
 
 export default App;

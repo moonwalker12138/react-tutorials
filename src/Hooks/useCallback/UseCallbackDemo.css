@@ -1,0 +1,19 @@
+@-webkit-keyframes blinker {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.myContainer {
+    /* background-color: dodgerblue; */
+    /* animation: blinker 4s linear infinite; */
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
