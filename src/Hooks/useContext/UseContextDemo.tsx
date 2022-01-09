@@ -84,7 +84,7 @@ const BaseCube: React.FC<IBaseCubeProps> = ({ componentName, children }) => {
 
     const onClick = () => {
         const content = `Component Name: ${componentName}, Page Name: ${pageName}`;
-        loggerRef?.current?.logging(content);
+        // loggerRef?.current?.say(content);
     };
 
     return (

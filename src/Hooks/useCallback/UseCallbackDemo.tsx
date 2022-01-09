@@ -31,7 +31,7 @@ const Parent = () => {
     const onToggleHook = () => {
         setEnableUseCallback(!enableUseCallback)
         const content = enableUseCallback ? "< Disable useCallback >" : "< Enable useCallback >";
-        loggerRef?.current?.logging(content);
+        // loggerRef?.current?.say(content);
     };
 
     const cb = (img: string) => setImg(img);

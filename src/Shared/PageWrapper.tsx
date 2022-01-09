@@ -1,6 +1,5 @@
 import React, { createContext, RefObject, useRef } from "react";
-import { CodeBlock } from "./CodeBlock";
-import { ILoggerRef, Logger } from "./Logger";
+import { ILoggerRef, Logger } from "./Logger2";
 import { Sidebar } from "./Sidebar";
 
 interface IRefContext {
@@ -16,11 +15,11 @@ export const PageWrapper: React.FC<{}> = ({ children }) => {
         <RefContext.Provider value={{ loggerRef: loggerRef }}>
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-2">
+                    <div className="col-auto">
                         <Sidebar />
                     </div>
                     <div className="col">{children}</div>
-                    <div className="col-2">
+                    <div className="col-3">
                         <Logger ref={loggerRef} />
                     </div>
                 </div>

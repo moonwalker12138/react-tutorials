@@ -73,7 +73,7 @@ export function useUnmountEffect(effect: () => void) {
 
 export function useLogging(content: string) {
     const {loggerRef} = useContext(RefContext);
-    loggerRef?.current?.logging(content);
+    // loggerRef?.current?.say(content);
 }
 
 /* Custom Hooks */

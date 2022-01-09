@@ -67,9 +67,9 @@ const Child = () => {
     // 	};
     // }, [index]);
 
-    useMountEffect(() => logger?.logging("Mounted"));
-    useUpdateEffect(() => logger?.logging("Updated"));
-    useUnmountEffect(() => logger?.logging("Unmounted"));
+    // useMountEffect(() => logger?.say("Mounted"));
+    // useUpdateEffect(() => logger?.say("Updated"));
+    // useUnmountEffect(() => logger?.say("Unmounted"));
 
     return (
         <div
