@@ -19,7 +19,7 @@ const Game = () => {
     const hare = Hare;
     const tortoise = Tortoise;
 
-    const {loggerRef} = useContext(RefContext);
+    const { loggerRef } = useContext(RefContext);
 
     const [state, dispatch] = useReducer(reducer, {
         hareProgress: 0,
@@ -28,27 +28,39 @@ const Game = () => {
     });
 
     const onForward = () => {
-        dispatch({type: ActionType.Forward});
-    }
+        dispatch({ type: ActionType.Forward });
+    };
 
     useEffect(() => {
         if (state.winner) {
-            const result = state.winner === Winner.None ? "Tie!" : (state.winner === Winner.Hare ? `Winner: Hare-${hare.name}!` :  `Winner: Tortoise-${tortoise.name}!`);
-            loggerRef?.current?.append({sender: RefereeImg, message: result});
+            const result =
+                state.winner === Winner.None
+                    ? "Tie!"
+                    : state.winner === Winner.Hare
+                    ? `Winner: Hare-${hare.name}!`
+                    : `Winner: Tortoise-${tortoise.name}!`;
+            loggerRef?.current?.append({ sender: RefereeImg, message: result });
         }
     }, [state.winner]);
 
     useEffect(() => {
         loggerRef?.current?.append([
-            {sender: hare.character, message: hare.greeting},
-            {sender: tortoise.character, message: tortoise.greeting},
+            { sender: hare.character, message: hare.greeting },
+            { sender: tortoise.character, message: tortoise.greeting },
         ]);
     }, []);
 
     return (
-        <Container 
-            hareRaceTrack={<RaceTrack character={hare.character} progress={state.hareProgress}/>}
-            tortoiseRaceTrack={<RaceTrack character={tortoise.character} progress={state.tortoiseProgress}/>}
+        <Container
+            hareRaceTrack={
+                <RaceTrack player={hare} progress={state.hareProgress} />
+            }
+            tortoiseRaceTrack={
+                <RaceTrack
+                    player={tortoise}
+                    progress={state.tortoiseProgress}
+                />
+            }
             onForward={onForward}
         />
     );

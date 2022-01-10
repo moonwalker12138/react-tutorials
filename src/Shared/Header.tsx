@@ -10,7 +10,7 @@ export const Header = () => {
         >
             <div className="row justify-content-center">
                 <div className="col-auto">
-                    <img src={logo} alt="" style={{width: "100%"}}/>
+                    <img src={logo} alt="" style={{ width: "100%" }} />
                 </div>
                 <div className="col-auto">
                     <span

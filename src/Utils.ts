@@ -1,4 +1,4 @@
-import {
+import React, {
     DependencyList,
     EffectCallback,
     useContext,
@@ -71,8 +71,34 @@ export function useUnmountEffect(effect: () => void) {
     }, []);
 }
 
+// export function useSyncState<T>(initValue: T): [React.RefObject<T>, (newValue: T) => void] {
+//     const forceUpdate = useForceUpdate();
+
+//     const ref = useRef(initValue);
+//     const setValue = (newValue: T) => {
+//         ref.current = newValue;
+//         forceUpdate();
+//     };
+
+//     return [ref, setValue];
+// }
+
+export function useSyncState<T>(
+    initValue: T
+): [React.RefObject<T>, (newValue: T) => void] {
+    const forceUpdate = useForceUpdate();
+
+    const ref = useRef(initValue);
+    const setValue = (newValue: T) => {
+        ref.current = newValue;
+        forceUpdate();
+    };
+
+    return [ref, setValue];
+}
+
 export function useLogging(content: string) {
-    const {loggerRef} = useContext(RefContext);
+    const { loggerRef } = useContext(RefContext);
     // loggerRef?.current?.say(content);
 }
 

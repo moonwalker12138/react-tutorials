@@ -1,5 +1,5 @@
 import React, { createContext, RefObject, useRef } from "react";
-import { ILoggerRef, Billboard } from "./Billboard";
+import { ILoggerRef, Billboard } from "./Billboard2";
 // import { ILoggerRef, Logger as Billboard } from "./Logger3";
 import { Sidebar } from "./Sidebar";
 

@@ -8,7 +8,7 @@ import { Hare, Tortoise } from "../../Model/Player";
 export enum Winner {
     Hare = "Hare",
     Tortoise = "Tortoise",
-    None = "None",  // Tie
+    None = "None", // Tie
 }
 
 interface IState {
@@ -45,13 +45,20 @@ const Game = () => {
     });
 
     const onForward = () => {
-        dispatch({type: ActionType.Forward});
-    }
+        dispatch({ type: ActionType.Forward });
+    };
 
     return (
-        <Container 
-            hareRaceTrack={<RaceTrack character={hare.character} progress={state.hareProgress}/>}
-            tortoiseRaceTrack={<RaceTrack character={tortoise.character} progress={state.tortoiseProgress}/>}
+        <Container
+            hareRaceTrack={
+                <RaceTrack player={hare} progress={state.hareProgress} />
+            }
+            tortoiseRaceTrack={
+                <RaceTrack
+                    player={tortoise}
+                    progress={state.tortoiseProgress}
+                />
+            }
             onForward={onForward}
         />
     );
@@ -72,13 +79,16 @@ export const reducer = (state: IState, action: IAction) => {
                 hareProgress: hareProgress,
                 tortoiseProgress: tortoiseProgress,
                 winner: winner,
-            }
+            };
         default:
             return state;
     }
 };
 
-const getWinner = (hareProgress: number, tortoiseProgress: number): Winner | undefined => {
+const getWinner = (
+    hareProgress: number,
+    tortoiseProgress: number
+): Winner | undefined => {
     let winner: Winner | undefined = undefined;
     if (hareProgress === 10) {
         if (tortoiseProgress === 10) {
@@ -89,7 +99,7 @@ const getWinner = (hareProgress: number, tortoiseProgress: number): Winner | und
     } else {
         if (tortoiseProgress === 10) {
             winner = Winner.Tortoise;
-        } 
+        }
     }
 
     return winner;

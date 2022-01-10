@@ -25,7 +25,7 @@ export const Sidebar = () => {
     return (
         <div
             className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
-            style={{  backgroundColor: REACT_BACKGROUND_COLOR }}
+            style={{ backgroundColor: REACT_BACKGROUND_COLOR }}
         >
             <NavHeader />
             <hr />

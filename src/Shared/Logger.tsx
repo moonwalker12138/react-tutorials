@@ -16,13 +16,13 @@ export const Logger = React.forwardRef((props, ref) => {
         if (textRef.current) {
             textRef.current.value = DefaultValue;
         }
-    }
+    };
 
     const onDivide = () => {
         if (textRef.current) {
             textRef.current.value = textRef.current.value + Divider + "\n";
         }
-    }
+    };
 
     useImperativeHandle(ref, () => ({
         logging: (content: string) => {
@@ -34,7 +34,7 @@ export const Logger = React.forwardRef((props, ref) => {
     }));
 
     return (
-        <div style={{position: "relative"}}>
+        <div style={{ position: "relative" }}>
             <textarea
                 ref={textRef}
                 className="form-control col mb-3 bg-light"
@@ -44,8 +44,24 @@ export const Logger = React.forwardRef((props, ref) => {
                 spellCheck={false}
             ></textarea>
             <h2>
-                <i className="bi bi-hr" style={{position: "absolute", left: "10px", bottom: "10px"}} onClick={onDivide}></i>
-                <i className="bi bi-trash" style={{position: "absolute", right: "10px", bottom: "10px"}} onClick={onClear}></i>
+                <i
+                    className="bi bi-hr"
+                    style={{
+                        position: "absolute",
+                        left: "10px",
+                        bottom: "10px",
+                    }}
+                    onClick={onDivide}
+                ></i>
+                <i
+                    className="bi bi-trash"
+                    style={{
+                        position: "absolute",
+                        right: "10px",
+                        bottom: "10px",
+                    }}
+                    onClick={onClear}
+                ></i>
             </h2>
         </div>
     );

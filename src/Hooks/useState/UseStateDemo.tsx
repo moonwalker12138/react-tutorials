@@ -26,14 +26,18 @@ const Game = () => {
         }
 
         if (tortoiseProgress !== 10) {
-            setTortoiseProgress(Math.min(tortoiseProgress + tortoise.getStep(), 10));
+            setTortoiseProgress(
+                Math.min(tortoiseProgress + tortoise.getStep(), 10)
+            );
         }
-    }
+    };
 
     return (
-        <Container 
-            hareRaceTrack={<RaceTrack character={hare.character} progress={hareProgress}/>}
-            tortoiseRaceTrack={<RaceTrack character={tortoise.character} progress={tortoiseProgress}/>}
+        <Container
+            hareRaceTrack={<RaceTrack player={hare} progress={hareProgress} />}
+            tortoiseRaceTrack={
+                <RaceTrack player={tortoise} progress={tortoiseProgress} />
+            }
             onForward={onForward}
         />
     );

@@ -1,10 +1,18 @@
-import React, { useState } from "react";
-import { PageWrapper } from "../../Shared/PageWrapper";
+import React, {
+    useContext,
+    useEffect,
+    useReducer,
+    useRef,
+    useState,
+} from "react";
+import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
 import { RaceTrack } from "./RaceTrack";
 import { Hare, Tortoise } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
+import { reducer, ActionType, Winner } from "../useReducer/UseReducerDemo";
+import RefereeImg from "../../Images/Referee.png";
 
-/* Place players into the racing track */
+/* Update players' position during the race */
 export const UseLayoutEffectDemo = () => {
     return (
         <PageWrapper>
@@ -17,23 +25,52 @@ const Game = () => {
     const hare = Hare;
     const tortoise = Tortoise;
 
-    const [hareProgress, setHareProgress] = useState(0);
-    const [tortoiseProgress, setTortoiseProgress] = useState(0);
+    const { loggerRef } = useContext(RefContext);
+
+    const [state, dispatch] = useReducer(reducer, {
+        hareProgress: 0,
+        tortoiseProgress: 0,
+        winner: undefined,
+    });
 
     const onForward = () => {
-        if (hareProgress !== 10) {
-            setHareProgress(hareProgress + hare.getStep());
-        }
+        dispatch({ type: ActionType.Forward });
+    };
 
-        if (tortoiseProgress !== 10) {
-            setTortoiseProgress(tortoiseProgress + tortoise.getStep());
+    useEffect(() => {
+        loggerRef?.current?.append({
+            sender: hare.character,
+            message: hare.greeting,
+        });
+        loggerRef?.current?.append({
+            sender: tortoise.character,
+            message: tortoise.greeting,
+        });
+    }, []);
+
+    useEffect(() => {
+        if (state.winner) {
+            const result =
+                state.winner === Winner.None
+                    ? "Tie!"
+                    : state.winner === Winner.Hare
+                    ? `Winner: Hare-${hare.name}!`
+                    : `Winner: Tortoise-${tortoise.name}!`;
+            loggerRef?.current?.append({ sender: RefereeImg, message: result });
         }
-    }
+    }, [state.winner]);
 
     return (
-        <Container 
-            hareRaceTrack={<RaceTrack character={hare.character} progress={hareProgress}/>}
-            tortoiseRaceTrack={<RaceTrack character={tortoise.character} progress={tortoiseProgress}/>}
+        <Container
+            hareRaceTrack={
+                <RaceTrack player={hare} progress={state.hareProgress} />
+            }
+            tortoiseRaceTrack={
+                <RaceTrack
+                    player={tortoise}
+                    progress={state.tortoiseProgress}
+                />
+            }
             onForward={onForward}
         />
     );
