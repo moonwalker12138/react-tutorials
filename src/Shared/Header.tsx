@@ -9,13 +9,13 @@ export const Header = () => {
             style={{ backgroundColor: REACT_BACKGROUND_COLOR }}
         >
             <div className="row justify-content-center">
-                <div className="col-1">
+                <div className="col-auto">
                     <img src={logo} alt="" style={{width: "100%"}}/>
                 </div>
-                <div className="col-4">
+                <div className="col-auto">
                     <span
                         style={{
-                            fontSize: "300%",
+                            fontSize: "8rem",
                             color: REACT_TEXT_COLOR,
                             fontFamily: "sans-serif",
                         }}

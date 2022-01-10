@@ -1,5 +1,4 @@
-import React, { useImperativeHandle, useRef, useState } from "react";
-import ReactDOMServer from "react-dom/server";
+import React, { useEffect, useImperativeHandle, useState } from "react";
 
 interface IChat {
 	sender: string;
@@ -10,29 +9,32 @@ export interface ILoggerRef {
     append: (chats: IChat | IChat[]) => void;
 }
 
-export const Logger = React.forwardRef((props, ref) => {
-	const chatsRef = useRef<HTMLDivElement>(null);
+export const Billboard = React.forwardRef((props, ref) => {
+	const [content, setContent] = useState<IChat[]>([]);
 
-	const clearChats = () => {
-		// chatsRef.current
-	};
+	const clearChats = () => setContent([]);
+
+	useEffect(() => {
+		console.log("YF [Billboard] ", content);
+	}, [content]);
 
     useImperativeHandle(ref, () => ({
         append: (chats: IChat | IChat[]) => {
 			let filteredChats = (Array.isArray(chats) ? chats : [chats]).filter((chat) => chat.message !== "");
-			// chatsRef.current?.append(ReactDOMServer.renderToStaticMarkup(<div>hello</div>));
+			console.log("YF [Billboard] ", content, filteredChats);
+			setContent([...content, ...filteredChats]);
         },
     }));
 
     return (
-		<div style={{border: "solid", height: "80vh", overflow: "scroll"}}>
+		<div style={{border: "solid", height: "80vh", overflow: "auto"}}>
 			<div className="d-flex justify-content-end px-1" >
 				<i className="bi bi-trash" style={{width: "1rem"}} onClick={clearChats}></i>
 			</div>
-			<div className="d-flex flex-column" ref={chatsRef}>
-				{/* {chatsRef.current.map(({sender, message}) => (
+			<div className="d-flex flex-column">
+				{content.map(({sender, message}) => (
 					<Chat sender={sender} message={message} />
-				))} */}
+				))}
 			</div>
 		</div>
     );

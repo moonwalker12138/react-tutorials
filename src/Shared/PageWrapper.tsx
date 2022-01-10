@@ -1,5 +1,6 @@
 import React, { createContext, RefObject, useRef } from "react";
-import { ILoggerRef, Logger } from "./Logger2";
+import { ILoggerRef, Billboard } from "./Billboard";
+// import { ILoggerRef, Logger as Billboard } from "./Logger3";
 import { Sidebar } from "./Sidebar";
 
 interface IRefContext {
@@ -20,7 +21,7 @@ export const PageWrapper: React.FC<{}> = ({ children }) => {
                     </div>
                     <div className="col">{children}</div>
                     <div className="col-3">
-                        <Logger ref={loggerRef} />
+                        <Billboard ref={loggerRef} />
                     </div>
                 </div>
             </div>

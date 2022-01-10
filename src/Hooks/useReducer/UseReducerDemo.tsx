@@ -2,18 +2,23 @@ import React, { useReducer } from "react";
 import { PageWrapper } from "../../Shared/PageWrapper";
 import { getRandomBoolean } from "../../Utils";
 import { Container } from "../../Shared/Container";
-import { RaceTrack } from "../useLayoutEffect/RaceTrack";
+import { RaceTrack } from "../useState/RaceTrack";
 import { Hare, Tortoise } from "../../Model/Player";
 
-
-enum ActionType {
-    Forward = "Forward",
+export enum Winner {
+    Hare = "Hare",
+    Tortoise = "Tortoise",
+    None = "None",  // Tie
 }
 
 interface IState {
     hareProgress: number;
     tortoiseProgress: number;
-    winner: string | undefined;
+    winner?: Winner;
+}
+
+export enum ActionType {
+    Forward = "Forward",
 }
 
 interface IAction {
@@ -52,7 +57,7 @@ const Game = () => {
     );
 };
 
-const reducer = (state: IState, action: IAction) => {
+export const reducer = (state: IState, action: IAction) => {
     switch (action.type) {
         case ActionType.Forward:
             if (state.winner) {
@@ -73,17 +78,17 @@ const reducer = (state: IState, action: IAction) => {
     }
 };
 
-const getWinner = (hareProgress: number, tortoiseProgress: number): string | undefined => {
-    let winner: string | undefined = undefined;
+const getWinner = (hareProgress: number, tortoiseProgress: number): Winner | undefined => {
+    let winner: Winner | undefined = undefined;
     if (hareProgress === 10) {
         if (tortoiseProgress === 10) {
-            winner = "Tie";
+            winner = Winner.None;
         } else {
-            winner = "Hare";
+            winner = Winner.Hare;
         }
     } else {
         if (tortoiseProgress === 10) {
-            winner = "Tortoise";
+            winner = Winner.Tortoise;
         } 
     }
 

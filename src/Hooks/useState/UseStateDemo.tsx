@@ -4,7 +4,7 @@ import { Container } from "../../Shared/Container";
 import { RaceTrack } from "./RaceTrack";
 import { Hare, Tortoise } from "../../Model/Player";
 
-/* Create players with state */
+/* Create players and race tracks */
 export const UseStateDemo = () => {
     return (
         <PageWrapper>
@@ -22,11 +22,11 @@ const Game = () => {
 
     const onForward = () => {
         if (hareProgress !== 10) {
-            setHareProgress(hareProgress + hare.getStep());
+            setHareProgress(Math.min(hareProgress + hare.getStep(), 10));
         }
 
         if (tortoiseProgress !== 10) {
-            setTortoiseProgress(tortoiseProgress + tortoise.getStep());
+            setTortoiseProgress(Math.min(tortoiseProgress + tortoise.getStep(), 10));
         }
     }
 
@@ -38,44 +38,3 @@ const Game = () => {
         />
     );
 };
-
-// const Hare = () => {
-//     const [progress, setProgress] = useState(0);
-//     const onForward = () => {
-//         if (progress === 10) return;
-//         const step = getRandomBoolean() ? 2 : 0;
-//         setProgress(progress + step);
-//     };
-
-//     return (
-//         // <CodeWrapper code={codeA} position={CodePosition.TopRight}>
-//             <Player character={HareImg} progress={progress} onForward={onForward} />
-//         // </CodeWrapper>
-//     );
-// };
-
-
-// interface ISate {
-//     progress: number;
-// }
-
-// class Tortoise extends Component<{}, ISate> {
-//     constructor(props: {}) {
-//         super(props);
-//         this.state = { progress: 0 };
-//         this.onForward = this.onForward.bind(this);
-//     }
-
-//     public render(): React.ReactNode {
-//         return (
-//             // <CodeWrapper code={codeB} position={CodePosition.TopRight}>
-//                 <Player character={TortoiseImg} progress={this.state.progress} onForward={this.onForward} />
-//             // </CodeWrapper>
-//         );
-//     }
-
-//     private onForward() {
-//         if (this.state.progress === 10) return;
-//         this.setState({ progress: this.state.progress + 1 });
-//     }
-// }

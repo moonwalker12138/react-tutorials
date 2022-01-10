@@ -9,9 +9,9 @@ export const Sidebar = () => {
         { name: HookNames.UseState, url: UrlInfo.UseState },
         { name: HookNames.UseReducer, url: UrlInfo.UseReducer },
         { name: HookNames.UseEffect, url: UrlInfo.UseEffect },
+        { name: HookNames.UseRef, url: UrlInfo.UseRef },
         { name: HookNames.UseLayoutEffect, url: UrlInfo.UseLayoutEffect },
         { name: HookNames.UseContext, url: UrlInfo.UseContext },
-        { name: HookNames.UseRef, url: UrlInfo.UseRef },
         {
             name: HookNames.UseImperativeHandle,
             url: UrlInfo.UseImperativeHandle,
