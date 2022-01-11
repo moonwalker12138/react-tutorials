@@ -37,6 +37,7 @@ export const UseReducerDemo = () => {
 const Game = () => {
     const hare = Hare;
     const tortoise = Tortoise;
+    const reducer = getReducer(hare.getStep, tortoise.getStep);
 
     const [state, dispatch] = useReducer(reducer, {
         hareProgress: 0,
@@ -64,26 +65,28 @@ const Game = () => {
     );
 };
 
-export const reducer = (state: IState, action: IAction) => {
-    switch (action.type) {
-        case ActionType.Forward:
-            if (state.winner) {
+export const getReducer = (hareStep: () => number, tortoiseStep: () => number) => {
+    const reducer = (state: IState, action: IAction) => {
+        switch (action.type) {
+            case ActionType.Forward:
+                if (state.winner) {
+                    return state;
+                }
+                const hareProgress = Math.min(state.hareProgress + hareStep(), 10);
+                const tortoiseProgress = Math.min(state.tortoiseProgress + tortoiseStep());
+                const winner = getWinner(hareProgress, tortoiseProgress);
+                return {
+                    hareProgress: hareProgress,
+                    tortoiseProgress: tortoiseProgress,
+                    winner: winner,
+                };
+            default:
                 return state;
-            }
-            const hareStep = getRandomBoolean() ? 2 : 0;
-            const hareProgress = state.hareProgress + hareStep;
-            const tortoiseStep = 1;
-            const tortoiseProgress = state.tortoiseProgress + tortoiseStep;
-            const winner = getWinner(hareProgress, tortoiseProgress);
-            return {
-                hareProgress: hareProgress,
-                tortoiseProgress: tortoiseProgress,
-                winner: winner,
-            };
-        default:
-            return state;
-    }
-};
+        }
+    };
+
+    return reducer;
+}
 
 const getWinner = (
     hareProgress: number,

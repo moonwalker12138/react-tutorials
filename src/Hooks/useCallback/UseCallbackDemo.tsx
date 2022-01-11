@@ -1,135 +1,89 @@
 import React, {
-    useCallback,
     useContext,
     useEffect,
-    useRef,
+    useReducer,
     useState,
 } from "react";
-import { APPLE_RAINBOW_COLORS } from "../../Constants/Colors";
 import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
-import "./UseCallbackDemo.css";
-import VivaInsightsLogo from "../../Images/VivaInsightsLogo.svg";
-import VivaInsightsLogo32 from "../../Images/VivaInsightsLogo32.png";
-import Hare from "../../Images/Hare.png";
-import Tortoise from "../../Images/Tortoise.png";
-import { sleep, useLogging } from "../../Utils";
-import { CodePosition, CodeWrapper } from "../../Shared/CodeWrapper";
+import { RaceTrack } from "../useCallback/RaceTrack";
+import { Hare, Hare2, Player, Tortoise, Tortoise2 } from "../../Model/Player";
+import { Container } from "../../Shared/Container";
+import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
+import RefereeImg from "../../Images/Referee.png";
 
+/* Prevent re-rendering child unnecessarily when parent re-renders */
 export const UseCallbackDemo = () => {
     return (
         <PageWrapper>
-            <CodeWrapper code={"ajsdlf"} position={CodePosition.BottomLeft}>
-                <Parent />
-            </CodeWrapper>
+            <Game />
         </PageWrapper>
     );
 };
 
-const Parent = () => {
+const Game = () => {
+    const [hare, setHare] = useState<Player>(Hare);
+    const switchHare = () => setHare(hare === Hare ? Hare2 : Hare);
+
+    const [tortoise, setTortoise] = useState<Player>(Tortoise);
+    const switchTortoise = () => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise);
+    
+    // const hare = Hare;
+    // const tortoise = Tortoise;
+
     const { loggerRef } = useContext(RefContext);
 
-    const [count, setCount] = useState(0);
-    const onChangeColor = () => setCount(count + 1);
+    const reducer = getReducer(hare.getStep, tortoise.getStep);
+    const [state, dispatch] = useReducer(reducer, {
+        hareProgress: 0,
+        tortoiseProgress: 0,
+        winner: undefined,
+    });
 
-    const [img, setImg] = useState(Hare);
-
-    const [enableUseCallback, setEnableUseCallback] = useState(false);
-    const onToggleHook = () => {
-        setEnableUseCallback(!enableUseCallback);
-        const content = enableUseCallback
-            ? "< Disable useCallback >"
-            : "< Enable useCallback >";
-        // loggerRef?.current?.say(content);
+    const onForward = () => {
+        dispatch({ type: ActionType.Forward });
     };
 
-    const cb = (img: string) => setImg(img);
-    const cb1 = useCallback(cb, []);
-    const callback = enableUseCallback ? cb1 : cb;
+    // useEffect(() => {
+    //     loggerRef?.current?.append({
+    //         sender: hare.character,
+    //         message: hare.greeting,
+    //     });
+    //     loggerRef?.current?.append({
+    //         sender: tortoise.character,
+    //         message: tortoise.greeting,
+    //     });
+    // }, []);
 
-    const backgroundColor =
-        APPLE_RAINBOW_COLORS[count % APPLE_RAINBOW_COLORS.length];
+    useEffect(() => {
+        if (state.winner) {
+            const result =
+                state.winner === Winner.None
+                    ? "Tie!"
+                    : state.winner === Winner.Hare
+                    ? `Winner: Hare-${hare.name}!`
+                    : `Winner: Tortoise-${tortoise.name}!`;
+            loggerRef?.current?.append({ sender: RefereeImg, message: result });
+        }
+    }, [state.winner]);
 
     return (
-        <div
-            className="container p-5 rounded-4"
-            style={{ backgroundColor: backgroundColor, height: "600px" }}
-        >
-            <div className="row">
-                <div className="col-auto">
-                    <div className="d-flex flex-column justify-content-start">
-                        <h2>
-                            <i
-                                className="bi bi-palette"
-                                onClick={onChangeColor}
-                            ></i>
-                        </h2>
-                        <h2>
-                            <img src={img} alt="" style={{ width: "32px" }} />
-                        </h2>
-                        <h2>
-                            <i
-                                className={`bi ${
-                                    enableUseCallback
-                                        ? "bi-toggle-on"
-                                        : "bi-toggle-off"
-                                }`}
-                                onClick={onToggleHook}
-                            ></i>
-                        </h2>
-                    </div>
-                </div>
-                <div className="col-auto ">
-                    <Child callback={callback} />
-                </div>
+        <>
+            <div className="d-flex justify-content-between m-3">
+                <button className="btn btn-outline-primary" onClick={switchHare}>{"Switch Hare"}</button>
+                <button className="btn btn-outline-primary" onClick={switchTortoise}>{"Switch Tortoise"}</button>
             </div>
-        </div>
+            <Container
+                hareRaceTrack={
+                    <RaceTrack player={hare} progress={state.hareProgress} />
+                }
+                tortoiseRaceTrack={
+                    <RaceTrack
+                        player={tortoise}
+                        progress={state.tortoiseProgress}
+                    />
+                }
+                onForward={onForward}
+            />
+        </>
     );
 };
-
-const Child: React.FC<{ callback: (img: string) => void }> = React.memo(
-    ({ callback }) => {
-        useLogging("Render child component");
-
-        const [isHare, setIsHare] = useState(true);
-        const onClick = () => {
-            setIsHare(!isHare);
-            callback(isHare ? Tortoise : Hare);
-        };
-
-        if (!isHare) {
-            sleep(2000);
-        }
-
-        return (
-            <div
-                style={{
-                    border: "dotted 2px",
-                    padding: "10px",
-                    width: "1050px",
-                }}
-            >
-                <div className="d-flex justify-content-center mb-3">
-                    <img
-                        src={isHare ? Hare : Tortoise}
-                        alt=""
-                        style={{
-                            opacity: 0.7,
-                            height: "400px",
-                            filter: "invert(100%)",
-                        }}
-                    />
-                </div>
-                <div className="d-flex justify-content-center">
-                    <h2>
-                        <i
-                            className="bi bi-arrow-right-circle"
-                            onClick={onClick}
-                        ></i>
-                    </h2>
-                </div>
-            </div>
-        );
-    }
-);
-
-export default UseCallbackDemo;

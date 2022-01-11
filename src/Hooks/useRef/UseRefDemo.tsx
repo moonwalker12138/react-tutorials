@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer, useRef } from "react";
 import { Hare, Tortoise } from "../../Model/Player";
 import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
-import { reducer, ActionType, Winner } from "../useReducer/UseReducerDemo";
+import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import { RaceTrack } from "./RaceTrack";
 import RefereeImg from "../../Images/Referee.png";
 import { Container } from "../../Shared/Container";
@@ -21,6 +21,7 @@ const Game = () => {
 
     const { loggerRef } = useContext(RefContext);
 
+    const reducer = getReducer(hare.getStep, tortoise.getStep);
     const [state, dispatch] = useReducer(reducer, {
         hareProgress: 0,
         tortoiseProgress: 0,

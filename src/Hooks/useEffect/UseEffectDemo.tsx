@@ -4,7 +4,7 @@ import { RaceTrack } from "../useState/RaceTrack";
 import RefereeImg from "../../Images/Referee.png";
 import { Container } from "../../Shared/Container";
 import { Hare, Tortoise } from "../../Model/Player";
-import { ActionType, reducer, Winner } from "../useReducer/UseReducerDemo";
+import { ActionType, getReducer, Winner } from "../useReducer/UseReducerDemo";
 
 /* Output the winner to billboard once determined */
 export const UseEffectDemo = () => {
@@ -21,6 +21,7 @@ const Game = () => {
 
     const { loggerRef } = useContext(RefContext);
 
+    const reducer = getReducer(hare.getStep, tortoise.getStep);
     const [state, dispatch] = useReducer(reducer, {
         hareProgress: 0,
         tortoiseProgress: 0,
