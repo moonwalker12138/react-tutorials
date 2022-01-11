@@ -6,10 +6,11 @@ import React, {
 } from "react";
 import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
 import { RaceTrack } from "../useCallback/RaceTrack";
-import { Hare, Hare2, Player, Tortoise, Tortoise2 } from "../../Model/Player";
+import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
+import { Player } from "./Player";
 
 /* Prevent re-rendering child unnecessarily when parent re-renders */
 export const UseCallbackDemo = () => {
@@ -21,15 +22,12 @@ export const UseCallbackDemo = () => {
 };
 
 const Game = () => {
-    const [hare, setHare] = useState<Player>(Hare);
+    const [hare, setHare] = useState<PlayerEntity>(Hare);
     const switchHare = () => setHare(hare === Hare ? Hare2 : Hare);
 
-    const [tortoise, setTortoise] = useState<Player>(Tortoise);
+    const [tortoise, setTortoise] = useState<PlayerEntity>(Tortoise);
     const switchTortoise = () => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise);
     
-    // const hare = Hare;
-    // const tortoise = Tortoise;
-
     const { loggerRef } = useContext(RefContext);
 
     const reducer = getReducer(hare.getStep, tortoise.getStep);
@@ -43,16 +41,9 @@ const Game = () => {
         dispatch({ type: ActionType.Forward });
     };
 
-    // useEffect(() => {
-    //     loggerRef?.current?.append({
-    //         sender: hare.character,
-    //         message: hare.greeting,
-    //     });
-    //     loggerRef?.current?.append({
-    //         sender: tortoise.character,
-    //         message: tortoise.greeting,
-    //     });
-    // }, []);
+    const onReset = () => {
+        dispatch({ type: ActionType.Reset });
+    }
 
     useEffect(() => {
         if (state.winner) {
@@ -74,15 +65,17 @@ const Game = () => {
             </div>
             <Container
                 hareRaceTrack={
-                    <RaceTrack player={hare} progress={state.hareProgress} />
+                    <RaceTrack progress={state.hareProgress}>
+                        <Player {...hare} />
+                    </RaceTrack> 
                 }
                 tortoiseRaceTrack={
-                    <RaceTrack
-                        player={tortoise}
-                        progress={state.tortoiseProgress}
-                    />
+                    <RaceTrack progress={state.tortoiseProgress}>
+                        <Player {...tortoise} />
+                    </RaceTrack>
                 }
                 onForward={onForward}
+                onReset={onReset}
             />
         </>
     );

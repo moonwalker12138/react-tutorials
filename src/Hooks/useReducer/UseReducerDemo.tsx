@@ -19,6 +19,7 @@ interface IState {
 
 export enum ActionType {
     Forward = "Forward",
+    Reset = "Reset",
 }
 
 interface IAction {
@@ -34,19 +35,25 @@ export const UseReducerDemo = () => {
     );
 };
 
+const InitialState: IState = {
+    hareProgress: 0,
+    tortoiseProgress: 0,
+    winner: undefined,
+}
+
 const Game = () => {
     const hare = Hare;
     const tortoise = Tortoise;
     const reducer = getReducer(hare.getStep, tortoise.getStep);
 
-    const [state, dispatch] = useReducer(reducer, {
-        hareProgress: 0,
-        tortoiseProgress: 0,
-        winner: undefined,
-    });
+    const [state, dispatch] = useReducer(reducer, InitialState);
 
     const onForward = () => {
         dispatch({ type: ActionType.Forward });
+    };
+
+    const onReset = () => {
+        dispatch({ type: ActionType.Reset });
     };
 
     return (
@@ -61,6 +68,7 @@ const Game = () => {
                 />
             }
             onForward={onForward}
+            onReset={onReset}
         />
     );
 };
@@ -73,13 +81,15 @@ export const getReducer = (hareStep: () => number, tortoiseStep: () => number) =
                     return state;
                 }
                 const hareProgress = Math.min(state.hareProgress + hareStep(), 10);
-                const tortoiseProgress = Math.min(state.tortoiseProgress + tortoiseStep());
+                const tortoiseProgress = Math.min(state.tortoiseProgress + tortoiseStep(), 10);
                 const winner = getWinner(hareProgress, tortoiseProgress);
                 return {
                     hareProgress: hareProgress,
                     tortoiseProgress: tortoiseProgress,
                     winner: winner,
                 };
+            case ActionType.Reset:
+                return InitialState;
             default:
                 return state;
         }

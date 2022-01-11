@@ -71,6 +71,15 @@ export function useUnmountEffect(effect: () => void) {
     }, []);
 }
 
+// export function usePrevious<T>(initValue: T, target: T) {
+//     const ref = useRef<T>(initValue);
+//     useEffect(() => {
+//         ref.current = target;
+//     });
+
+//     return ref;
+// }
+
 // export function useSyncState<T>(initValue: T): [React.RefObject<T>, (newValue: T) => void] {
 //     const forceUpdate = useForceUpdate();
 

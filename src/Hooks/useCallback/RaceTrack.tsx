@@ -1,17 +1,11 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from "react";
-import { Player } from "../../Model/Player";
-import { RefContext } from "../../Shared/PageWrapper";
+import { useLayoutEffect, useRef } from "react";
 import { ProgressBar } from "../../Shared/ProgressBar";
-import { useUpdateEffect } from "../../Utils";
 
 interface IRaceTrackProps {
-    player: Player;
     progress: number;
 }
 
-export const RaceTrack: React.FC<IRaceTrackProps> = ({ player, progress }) => {
-    const {loggerRef} = useContext(RefContext);
-
+export const RaceTrack: React.FC<IRaceTrackProps> = ({progress, children }) => {
     const progressBarRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef<HTMLImageElement>(null);
 
@@ -29,14 +23,6 @@ export const RaceTrack: React.FC<IRaceTrackProps> = ({ player, progress }) => {
         return () => window.removeEventListener("resize", updatePlayerPosition);
     }, [progress]);
 
-    useEffect(() => {
-        loggerRef?.current?.append({sender: player.character, message: player.greeting});
-    }, [player]);
-
-    useUpdateEffect(() => {
-        // useRef stores previous state
-        loggerRef?.current?.append({sender: player.character, message: `I was rendered again -_-`});
-    });
 
     return (
         <div className="d-flex" style={{ position: "relative" }}>
@@ -46,23 +32,9 @@ export const RaceTrack: React.FC<IRaceTrackProps> = ({ player, progress }) => {
                     progress={progress / 10}
                 />
             </div>
-            <img
-                ref={playerRef}
-                src={player.character}
-                alt=""
-                style={{ opacity: 0.7, height: "6rem", visibility: "hidden" }}
-            />
-            <img
-                ref={playerRef}
-                src={player.character}
-                alt=""
-                style={{
-                    opacity: 0.7,
-                    height: "6rem",
-                    position: "absolute",
-                    transition: "left .6s",
-                }}
-            />
+            <div style={{ position: "absolute", transition: "left .6s"}} ref={playerRef}>
+                {children}
+            </div>
         </div>
     );
 };

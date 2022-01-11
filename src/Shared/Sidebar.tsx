@@ -11,13 +11,13 @@ export const Sidebar = () => {
         { name: HookNames.UseEffect, url: UrlInfo.UseEffect },
         { name: HookNames.UseRef, url: UrlInfo.UseRef },
         { name: HookNames.UseLayoutEffect, url: UrlInfo.UseLayoutEffect },
+        { name: HookNames.UseCallback, url: UrlInfo.UseCallback },
+        { name: HookNames.UseMemo, url: UrlInfo.UseMemo },
         { name: HookNames.UseContext, url: UrlInfo.UseContext },
         {
             name: HookNames.UseImperativeHandle,
             url: UrlInfo.UseImperativeHandle,
         },
-        { name: HookNames.UseMemo, url: UrlInfo.UseMemo },
-        { name: HookNames.UseCallback, url: UrlInfo.UseCallback },
         { name: HookNames.CustomHooks, url: UrlInfo.CustomHooks },
         { name: HookNames.UseDebugValue, url: UrlInfo.UseDebugValue },
     ];

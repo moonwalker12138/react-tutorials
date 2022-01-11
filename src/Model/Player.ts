@@ -1,13 +1,15 @@
 import HareImg from "../Images/Hare.png";
+import BunnyImg from "../Images/Bunny.png";
 import TortoiseImg from "../Images/Tortoise.png";
+import DonatelloImg from "../Images/Donatello.png";
 import { getRandomBoolean } from "../Utils";
 
-enum PlayerType {
+export enum PlayerType {
     Hare = "Hare",
     Tortoise = "Tortoise",
 }
 
-export interface Player {
+export interface PlayerEntity {
     name: string;
     character: string;
     greeting: string;
@@ -15,7 +17,7 @@ export interface Player {
     getStep: () => number;
 }
 
-export const Hare: Player = {
+export const Hare: PlayerEntity = {
     name: "Judy",
     character: HareImg,
     greeting: `Hello, I'm Judy!`,
@@ -25,17 +27,17 @@ export const Hare: Player = {
     },
 };
 
-export const Hare2: Player = {
-    name: "Jason",
-    character: HareImg,
-    greeting: `Hello, I'm Jason!`,
+export const Hare2: PlayerEntity = {
+    name: "Bunny",
+    character: BunnyImg,
+    greeting: `Hello, I'm Bunny!`,
     type: PlayerType.Hare,
     getStep: () => {
         return getRandomBoolean() ? 3 : 0;
     },
 };
 
-export const Tortoise: Player = {
+export const Tortoise: PlayerEntity = {
     name: "Flash",
     character: TortoiseImg,
     greeting: `H~e~l~l~o, I~~a~m~~F~l~a~s~h!`,
@@ -45,12 +47,14 @@ export const Tortoise: Player = {
     },
 };
 
-export const Tortoise2: Player = {
-    name: "Bunny",
-    character: TortoiseImg,
-    greeting: `Hey, Bunny`,
+export const Tortoise2: PlayerEntity = {
+    name: "Donatello",
+    character: DonatelloImg,
+    greeting: `It's Donatello. Give it all ya got`,
     type: PlayerType.Tortoise,
     getStep: () => {
-        return 1;
+        return 2;
     },
 };
+
+// TODO Add StellaLou and Olu

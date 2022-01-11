@@ -32,6 +32,11 @@ const Game = () => {
         }
     };
 
+    const onReset = () => {
+        setHareProgress(0);
+        setTortoiseProgress(0);
+    }
+
     return (
         <Container
             hareRaceTrack={<RaceTrack player={hare} progress={hareProgress} />}
@@ -39,6 +44,7 @@ const Game = () => {
                 <RaceTrack player={tortoise} progress={tortoiseProgress} />
             }
             onForward={onForward}
+            onReset={onReset}
         />
     );
 };

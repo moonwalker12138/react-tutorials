@@ -1,8 +1,8 @@
-import { Player } from "../../Model/Player";
+import { PlayerEntity } from "../../Model/Player";
 import { ProgressBar } from "../../Shared/ProgressBar";
 
 interface IRaceTrackProps {
-    player: Player;
+    player: PlayerEntity;
     progress: number;
 }
 

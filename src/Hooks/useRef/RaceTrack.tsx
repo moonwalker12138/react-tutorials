@@ -2,10 +2,10 @@ import { useContext, useEffect, useRef } from "react";
 import { RefContext } from "../../Shared/PageWrapper";
 import { ProgressBar } from "../../Shared/ProgressBar";
 import SystemImg from "../../Images/System.png";
-import { Player } from "../../Model/Player";
+import { PlayerEntity } from "../../Model/Player";
 
 interface IRaceTrackProps {
-    player: Player;
+    player: PlayerEntity;
     progress: number;
 }
 

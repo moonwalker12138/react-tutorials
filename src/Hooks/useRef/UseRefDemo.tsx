@@ -32,6 +32,10 @@ const Game = () => {
         dispatch({ type: ActionType.Forward });
     };
 
+    const onReset = () => {
+        dispatch({ type: ActionType.Reset });
+    };
+
     useEffect(() => {
         loggerRef?.current?.append({
             sender: hare.character,
@@ -67,6 +71,7 @@ const Game = () => {
                 />
             }
             onForward={onForward}
+            onReset={onReset}
         />
     );
 };

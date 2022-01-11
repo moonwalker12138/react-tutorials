@@ -32,6 +32,10 @@ const Game = () => {
         dispatch({ type: ActionType.Forward });
     };
 
+    const onReset = () => {
+        dispatch({ type: ActionType.Reset });
+    };
+
     useEffect(() => {
         if (state.winner) {
             const result =
@@ -63,6 +67,7 @@ const Game = () => {
                 />
             }
             onForward={onForward}
+            onReset={onReset}
         />
     );
 };
