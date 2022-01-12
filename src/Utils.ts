@@ -7,6 +7,7 @@ import React, {
     useRef,
     useState,
 } from "react";
+import { IChat } from "./Shared/Billboard2";
 import { RefContext } from "./Shared/PageWrapper";
 
 export function getCSSValue(name: string) {
@@ -104,11 +105,6 @@ export function useSyncState<T>(
     };
 
     return [ref, setValue];
-}
-
-export function useLogging(content: string) {
-    const { loggerRef } = useContext(RefContext);
-    // loggerRef?.current?.say(content);
 }
 
 /* Custom Hooks */

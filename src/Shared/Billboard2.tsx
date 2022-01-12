@@ -1,7 +1,7 @@
 import React, { useImperativeHandle } from "react";
 import { useSyncState } from "../Utils";
 
-interface IChat {
+export interface IChat {
     sender: string;
     message: string;
 }
@@ -40,8 +40,8 @@ export const Billboard = React.forwardRef((props, ref) => {
             </div>
             <div className="d-flex flex-column">
                 {contentRef.current !== null &&
-                    contentRef.current.map(({ sender, message }) => (
-                        <Chat sender={sender} message={message} />
+                    contentRef.current.map(({ sender, message }, index) => (
+                        <Chat sender={sender} message={message} key={index}/>
                     ))}
             </div>
         </div>

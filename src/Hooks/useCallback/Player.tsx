@@ -1,13 +1,18 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useMemo, useRef } from 'react'
 import { PlayerEntity } from '../../Model/Player';
 import { RefContext } from '../../Shared/PageWrapper';
 import { sleep } from '../../Utils';
+import SystemImg from "../../Images/System.png";
 
 export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type, getStep}) => {
 	const {loggerRef} = useContext(RefContext);
 	const prevNameRef = useRef<string>();
+	const isTimeConsuming = (name === "Bunny" || name === "Donatello");
 
 	useEffect(() => {
+		if (isTimeConsuming) {
+			loggerRef?.current?.append({sender: SystemImg, message: `Creating ${name}...`});
+		}
 		loggerRef?.current?.append({sender: character, message: greeting});
 	}, [name]);
 
@@ -19,12 +24,8 @@ export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type,
 		prevNameRef.current = name;
     });
 
-    if (name === "Bunny") {
-        loggerRef?.current?.append({sender: character, message: "Creating..."});
-        console.log("YF ", "Creating...");
+    if (isTimeConsuming) {
         sleep(1000);
-        loggerRef?.current?.append({sender: character, message: "Done"});
-        console.log("YF ", "Done");
     }
 
 	return (

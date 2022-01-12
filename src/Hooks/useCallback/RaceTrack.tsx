@@ -32,6 +32,7 @@ export const RaceTrack: React.FC<IRaceTrackProps> = ({progress, children }) => {
                     progress={progress / 10}
                 />
             </div>
+            <div style={{visibility: "hidden"}}>{children}</div>
             <div style={{ position: "absolute", transition: "left .6s"}} ref={playerRef}>
                 {children}
             </div>

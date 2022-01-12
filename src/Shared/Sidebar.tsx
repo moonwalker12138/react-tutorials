@@ -31,7 +31,7 @@ export const Sidebar = () => {
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
                 {navItems.map((navItem) => (
-                    <NavItem hookName={navItem.name} url={navItem.url} />
+                    <NavItem hookName={navItem.name} url={navItem.url} key={navItem.name}/>
                 ))}
             </ul>
         </div>
