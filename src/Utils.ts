@@ -98,13 +98,20 @@ export function useSyncState<T>(
 ): [React.RefObject<T>, (newValue: T) => void] {
     const forceUpdate = useForceUpdate();
 
-    const ref = useRef(initValue);
+    const ref = useRef<T>(initValue);
     const setValue = (newValue: T) => {
         ref.current = newValue;
         forceUpdate();
     };
 
     return [ref, setValue];
+}
+
+export function useLog() {
+    const {loggerRef} = useContext(RefContext);
+    return (chat: IChat) => {
+        loggerRef?.current?.append(chat);
+    };
 }
 
 /* Custom Hooks */

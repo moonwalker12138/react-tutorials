@@ -1,6 +1,7 @@
 import React, {
     useContext,
     useEffect,
+    useMemo,
     useReducer,
     useState,
 } from "react";
@@ -11,6 +12,7 @@ import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
 import { Player } from "./Player";
+import { useLog } from "../../Utils";
 
 /* Prevent re-rendering child unnecessarily when parent re-renders */
 export const UseCallbackDemo = () => {
@@ -28,7 +30,7 @@ const Game = () => {
     const [tortoise, setTortoise] = useState<PlayerEntity>(Tortoise);
     const switchTortoise = () => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise);
     
-    const { loggerRef } = useContext(RefContext);
+    const log = useLog();
 
     const reducer = getReducer(hare.getStep, tortoise.getStep);
     const [state, dispatch] = useReducer(reducer, {
@@ -53,30 +55,61 @@ const Game = () => {
                     : state.winner === Winner.Hare
                     ? `Winner: Hare-${hare.name}!`
                     : `Winner: Tortoise-${tortoise.name}!`;
-            loggerRef?.current?.append({ sender: RefereeImg, message: result });
+            log({ sender: RefereeImg, message: result });
         }
     }, [state.winner]);
 
     return (
         <>
-            <div className="d-flex justify-content-between m-3">
-                <button className="btn btn-outline-primary" onClick={switchHare}>{"Switch Hare"}</button>
-                <button className="btn btn-outline-primary" onClick={switchTortoise}>{"Switch Tortoise"}</button>
+            {/* <PlayerSelector players={[Hare, Hare2]} /> */}
+            <div className="container">
+                <div className="row row-cols-1 gy-5">
+                    <div className="col">
+                        <RaceTrack progress={state.hareProgress} player={hare} />
+                    </div>
+                    <div className="col">
+                        <RaceTrack progress={state.tortoiseProgress} player={tortoise} />
+                    </div>
+                </div>
+                <div className="d-flex justify-content-between">
+                    <i
+                        className="bi bi-arrow-clockwise"
+                        style={{ fontSize: "5rem" }}
+                        onClick={onReset}
+                    ></i>
+                    <i
+                        className="bi bi-forward"
+                        style={{ fontSize: "5rem"}}
+                        onClick={onForward}
+                    ></i>
+                </div>
             </div>
-            <Container
-                hareRaceTrack={
-                    <RaceTrack progress={state.hareProgress}>
-                        <Player {...hare} />
-                    </RaceTrack> 
-                }
-                tortoiseRaceTrack={
-                    <RaceTrack progress={state.tortoiseProgress}>
-                        <Player {...tortoise} />
-                    </RaceTrack>
-                }
-                onForward={onForward}
-                onReset={onReset}
-            />
         </>
+    );
+};
+
+const PlayerSelector: React.FC<{players: PlayerEntity[]}> = ({players}) => {
+    const defaultCount = 5;
+    const unknownCount = Math.max(defaultCount - players.length, 0);
+
+    return (
+        <div className="btn-group" role="group" >
+            {players.map((player) => (
+                <div key={`player-${player.name}`}>
+                    <input type="radio" className="btn-check" id={`player-${player.type}-${player.name}`} autoComplete="off" />
+                    <label className="btn btn-outline-primary" htmlFor={`player-${player.type}-${player.name}`}>
+                        <img src={players[0].character} alt="" style={{opacity: 0.7, height: "6rem"}}/>
+                    </label>
+                </div>
+            ))}
+            {[Array(unknownCount).keys()].map((index) => (
+                <div key={`unknown-${index}`}>
+                    <input type="radio" className="btn-check" id={`unknown-${index}`} autoComplete="off" />
+                    <label className="btn btn-outline-primary" htmlFor={`unknown-${index}`}>
+                        <i className="bi bi-question-lg" style={{color: "black"}}></i>
+                    </label>
+                </div>
+            ))}
+        </div>
     );
 };

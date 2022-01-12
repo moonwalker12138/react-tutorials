@@ -1,25 +1,24 @@
 import React, { useContext, useEffect, useMemo, useRef } from 'react'
 import { PlayerEntity } from '../../Model/Player';
 import { RefContext } from '../../Shared/PageWrapper';
-import { sleep } from '../../Utils';
+import { sleep, useLog, useMountEffect } from '../../Utils';
 import SystemImg from "../../Images/System.png";
 
 export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type, getStep}) => {
-	const {loggerRef} = useContext(RefContext);
+	const log = useLog();
 	const prevNameRef = useRef<string>();
 	const isTimeConsuming = (name === "Bunny" || name === "Donatello");
 
 	useEffect(() => {
 		if (isTimeConsuming) {
-			loggerRef?.current?.append({sender: SystemImg, message: `Creating ${name}...`});
+			log({sender: SystemImg, message: `Creating ${name}...`});
 		}
-		loggerRef?.current?.append({sender: character, message: greeting});
+		log({sender: character, message: greeting});
 	}, [name]);
 
     useEffect(() => {
-		// console.log(`YF hook prev: ${prevNameRef.current}, curr: ${name}`);
 		if (name === prevNameRef.current) {
-			loggerRef?.current?.append({sender: character, message: `I was rendered again -_-`});
+			log({sender: character, message: `I was rendered again. You're wasting time -_-`});
 		}
 		prevNameRef.current = name;
     });
