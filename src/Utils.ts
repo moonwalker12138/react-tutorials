@@ -7,7 +7,7 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { IChat } from "./Shared/Billboard";
+import { IRecord } from "./Shared/Billboard";
 import { RefContext } from "./Shared/PageWrapper";
 
 export function getCSSValue(name: string) {
@@ -109,7 +109,7 @@ export function useSyncState<T>(
 
 export function useLog() {
     const {loggerRef} = useContext(RefContext);
-    return (chat: IChat) => {
+    return (chat: IRecord) => {
         loggerRef?.current?.append(chat);
     };
 }

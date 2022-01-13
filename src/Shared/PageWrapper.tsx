@@ -1,16 +1,19 @@
 import React, { createContext, RefObject, useRef } from "react";
-import { ILoggerRef, Billboard } from "./Billboard";
+import { IBillboardRef, Billboard } from "./Billboard";
 // import { ILoggerRef, Logger as Billboard } from "./Logger3";
 import { Sidebar } from "./Sidebar";
 
 interface IRefContext {
-    loggerRef: RefObject<ILoggerRef> | null;
+    loggerRef: RefObject<IBillboardRef> | null;
+}
+interface IPageWrapperProps {
+    showBillboard?: boolean;
 }
 
 export const RefContext = createContext<IRefContext>({ loggerRef: null });
 
-export const PageWrapper: React.FC<{}> = ({ children }) => {
-    const loggerRef = useRef<ILoggerRef>(null);
+export const PageWrapper: React.FC<IPageWrapperProps> = ({ showBillboard=true, children }) => {
+    const loggerRef = useRef<IBillboardRef>(null);
 
     return (
         <RefContext.Provider value={{ loggerRef: loggerRef }}>
@@ -20,9 +23,11 @@ export const PageWrapper: React.FC<{}> = ({ children }) => {
                         <Sidebar />
                     </div>
                     <div className="col">{children}</div>
-                    <div className="col-3">
-                        <Billboard ref={loggerRef} />
-                    </div>
+                    {showBillboard && 
+                        <div className="col-3">
+                            <Billboard ref={loggerRef} />
+                        </div>
+                    }
                 </div>
             </div>
         </RefContext.Provider>
