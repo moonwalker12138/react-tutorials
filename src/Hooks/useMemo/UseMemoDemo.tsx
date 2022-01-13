@@ -1,49 +1,79 @@
-import React, { useMemo, useState } from "react";
-import { APPLE_RAINBOW_COLORS } from "../../Constants/Colors";
-import { PageWrapper } from "../../Shared/PageWrapper";
-import { getRandomInt, sleep, useUpdateRefs } from "../../Utils";
+import React, {
+    useContext,
+    useEffect,
+    useMemo,
+    useReducer,
+    useRef,
+    useState,
+} from "react";
+import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
+import { RaceTrack } from "./RaceTrack";
+import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
+import { Container } from "../../Shared/Container";
+import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
+import RefereeImg from "../../Images/Referee.png";
+import { Player } from "./Player";
+import { useLog } from "../../Utils";
 
+/* Prevent redundant computation when component renders */
 export const UseMemoDemo = () => {
-    const [index, setIndex] = useState(0);
-    const backgroundColor =
-        APPLE_RAINBOW_COLORS[index % APPLE_RAINBOW_COLORS.length];
-
-    const onClick = () => setIndex(index + 1);
-    // const result = compute();
-    const result = useMemo(compute, []);
-
-    useUpdateRefs();
-
     return (
         <PageWrapper>
-            <div>
-                <div
-                    className="container p-3"
-                    style={{
-                        backgroundColor: backgroundColor,
-                        height: "400px",
-                    }}
-                >
-                    <div className="row">
-                        <div className="col">
-                            <button
-                                className="btn btn-primary btn-lg"
-                                onClick={onClick}
-                            >
-                                {"Render"}
-                            </button>
-                        </div>
-                        <div className="col">
-                            <h3>{`Result: ${result}`}</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Game />
         </PageWrapper>
     );
 };
 
-const compute = () => {
-    // sleep(2000);
-    return 42;
+const Game = () => {
+    const [hare, setHare] = useState<PlayerEntity>(Hare);
+    const switchHare = () => setHare(hare === Hare ? Hare2 : Hare);
+
+    const [tortoise, setTortoise] = useState<PlayerEntity>(Tortoise);
+    const switchTortoise = () => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise);
+    
+    const log = useLog();
+
+    const reducer = getReducer(hare.getStep, tortoise.getStep);
+    const [state, dispatch] = useReducer(reducer, {
+        hareProgress: 0,
+        tortoiseProgress: 0,
+        winner: undefined,
+    });
+
+    const onForward = () => {
+        dispatch({ type: ActionType.Forward });
+    };
+
+    const onReset = () => {
+        dispatch({ type: ActionType.Reset });
+    }
+
+    useEffect(() => {
+        if (state.winner) {
+            const result =
+                state.winner === Winner.None
+                    ? "Tie!"
+                    : state.winner === Winner.Hare
+                    ? `Winner: Hare-${hare.name}!`
+                    : `Winner: Tortoise-${tortoise.name}!`;
+            log({ sender: RefereeImg, message: result });
+        }
+    }, [state.winner]);
+
+    return (
+        <Container
+            hareRaceTrack={
+                <RaceTrack player={hare} progress={state.hareProgress} onSwitchPlayer={switchHare} />
+            }
+            tortoiseRaceTrack={
+                <RaceTrack
+                    player={tortoise}
+                    progress={state.tortoiseProgress}
+                    onSwitchPlayer={switchTortoise}
+                />
+            }
+            onForward={onForward}
+            onReset={onReset}
+        />
+    );
 };

@@ -1,18 +1,19 @@
 import React, {
+	useCallback,
     useContext,
     useEffect,
     useMemo,
     useReducer,
+    useRef,
     useState,
 } from "react";
 import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
-import { RaceTrack } from "../useCallback/RaceTrack";
 import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
-import { Player } from "./Player";
 import { useLog } from "../../Utils";
+import { RaceTrack } from "./RaceTrack";
 
 /* Prevent re-rendering child unnecessarily when parent re-renders */
 export const UseCallbackDemo = () => {
@@ -24,11 +25,21 @@ export const UseCallbackDemo = () => {
 };
 
 const Game = () => {
+	const [enableHareUseCallback, setEnableHareUseCallback] = useState(false);
+	const toggleHareUseCallback = () => setEnableHareUseCallback(!enableHareUseCallback);
+
+	const [enableTortoiseUseCallback, setEnableTortoiseUseCallback] = useState(false);
+	const toggleTortoiseCallback = () => setEnableTortoiseUseCallback(!enableTortoiseUseCallback);
+
     const [hare, setHare] = useState<PlayerEntity>(Hare);
-    const switchHare = () => setHare(hare === Hare ? Hare2 : Hare);
+    const onSwitchHare = () => setHare(hare === Hare ? Hare2 : Hare);
+	const memoriedSwitchHare = useCallback(onSwitchHare, [hare]);
+	const switchHare = enableHareUseCallback ? memoriedSwitchHare : onSwitchHare;
 
     const [tortoise, setTortoise] = useState<PlayerEntity>(Tortoise);
-    const switchTortoise = () => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise);
+    const onSwitchTortoise = () => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise);
+	const memoriedSwitchTortoise = useCallback(onSwitchTortoise, [tortoise]);
+	const switchTortoise = enableTortoiseUseCallback ? memoriedSwitchTortoise : onSwitchTortoise;
     
     const log = useLog();
 
@@ -59,57 +70,36 @@ const Game = () => {
         }
     }, [state.winner]);
 
-    return (
-        <>
-            {/* <PlayerSelector players={[Hare, Hare2]} /> */}
-            <div className="container">
-                <div className="row row-cols-1 gy-5">
-                    <div className="col">
-                        <RaceTrack progress={state.hareProgress} player={hare} />
-                    </div>
-                    <div className="col">
-                        <RaceTrack progress={state.tortoiseProgress} player={tortoise} />
-                    </div>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <i
-                        className="bi bi-arrow-clockwise"
-                        style={{ fontSize: "5rem" }}
-                        onClick={onReset}
-                    ></i>
-                    <i
-                        className="bi bi-forward"
-                        style={{ fontSize: "5rem"}}
-                        onClick={onForward}
-                    ></i>
-                </div>
-            </div>
-        </>
-    );
-};
-
-const PlayerSelector: React.FC<{players: PlayerEntity[]}> = ({players}) => {
-    const defaultCount = 5;
-    const unknownCount = Math.max(defaultCount - players.length, 0);
+    const prevHare = useRef<PlayerEntity>();
+    const prevSwitchHare = useRef<() => void>();
+    useEffect(() => {
+        // console.log("YF Game name", prevHare.current?.name, hare.name);
+        // console.log("YF Game hare", prevHare.current, hare);
+        // console.log("YF Game switchPlayer", prevHare.current?.name, hare.name);
+        console.log("YF Game", prevHare.current === hare, prevSwitchHare.current === switchHare);
+        prevHare.current = hare;
+        prevSwitchHare.current = switchHare;
+    });
 
     return (
-        <div className="btn-group" role="group" >
-            {players.map((player) => (
-                <div key={`player-${player.name}`}>
-                    <input type="radio" className="btn-check" id={`player-${player.type}-${player.name}`} autoComplete="off" />
-                    <label className="btn btn-outline-primary" htmlFor={`player-${player.type}-${player.name}`}>
-                        <img src={players[0].character} alt="" style={{opacity: 0.7, height: "6rem"}}/>
-                    </label>
-                </div>
-            ))}
-            {[Array(unknownCount).keys()].map((index) => (
-                <div key={`unknown-${index}`}>
-                    <input type="radio" className="btn-check" id={`unknown-${index}`} autoComplete="off" />
-                    <label className="btn btn-outline-primary" htmlFor={`unknown-${index}`}>
-                        <i className="bi bi-question-lg" style={{color: "black"}}></i>
-                    </label>
-                </div>
-            ))}
-        </div>
+		<>
+		<button className="btn btn-outline-primary me-5" onClick={toggleHareUseCallback}>{"Enable hare useCallback"}</button>
+		<button className="btn btn-outline-primary me-5" onClick={toggleTortoiseCallback}>{"Enable tortoise useCallback"}</button>
+        <Container
+            hareRaceTrack={
+                <RaceTrack player={hare} progress={state.hareProgress} onSwitchPlayer={switchHare} toggleUseCallback={undefined} />
+            }
+            tortoiseRaceTrack={
+                <RaceTrack
+                    player={tortoise}
+                    progress={state.tortoiseProgress}
+                    onSwitchPlayer={switchTortoise}
+					toggleUseCallback={toggleTortoiseCallback}
+                />
+            }
+            onForward={onForward}
+            onReset={onReset}
+        />
+		</>
     );
 };

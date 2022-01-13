@@ -7,7 +7,7 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { IChat } from "./Shared/Billboard2";
+import { IChat } from "./Shared/Billboard";
 import { RefContext } from "./Shared/PageWrapper";
 
 export function getCSSValue(name: string) {

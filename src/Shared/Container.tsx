@@ -20,12 +20,12 @@ export const Container: React.FC<IContainer> = ({
             <div className="d-flex justify-content-between">
                 <i
                     className="bi bi-arrow-clockwise"
-                    style={{ fontSize: "5rem" }}
+                    style={{ fontSize: "4rem" }}
                     onClick={onReset}
                 ></i>
                 <i
                     className="bi bi-forward"
-                    style={{ fontSize: "5rem"}}
+                    style={{ fontSize: "4rem"}}
                     onClick={onForward}
                 ></i>
             </div>

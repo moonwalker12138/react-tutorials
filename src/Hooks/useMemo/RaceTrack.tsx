@@ -1,21 +1,15 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { PlayerEntity } from "../../Model/Player";
 import { ProgressBar } from "../../Shared/ProgressBar";
-import { useLog } from "../../Utils";
-import SystemImg from "../../Images/System.png";
-import { Player } from "../useMemo/Player";
-import React from "react";
+import { Player } from "./Player";
 
 interface IRaceTrackProps {
     progress: number;
     player: PlayerEntity;
     onSwitchPlayer: () => void;
-	toggleUseCallback?: () => void;
 }
 
-export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, player, onSwitchPlayer, toggleUseCallback}) => {
-    const log = useLog();
-
+export const RaceTrack: React.FC<IRaceTrackProps> = ({progress, player, onSwitchPlayer}) => {
     const progressBarRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef<HTMLImageElement>(null);
 
@@ -37,10 +31,6 @@ export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, playe
         return () => window.removeEventListener("resize", updatePlayerPosition);
     }, [progress]);
 
-	useEffect(() => {
-		log({sender: SystemImg, message: `${player.type}'s race track rendered.`})
-	});
-
     return (
         <>
             <div className="d-flex mb-1 align-items-center">
@@ -51,10 +41,6 @@ export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, playe
                 <div className="form-check form-switch me-5">
                     <input type="checkbox" role="switch" className="form-check-input" onClick={() => setEnableUseMemo(!enableUseMemo)} />
                     <label htmlFor="" className="form-check-label" style={{fontFamily: "Comic Sans MS"}}>{"Enable useMemo"}</label>
-                </div>
-                <div className="form-check form-switch me-5">
-                    <input type="checkbox" role="switch" className="form-check-input" onClick={toggleUseCallback} />
-                    <label htmlFor="" className="form-check-label" style={{fontFamily: "Comic Sans MS"}}>{"Enable useCallback"}</label>
                 </div>
             </div>
             <div className="d-flex" style={{ position: "relative" }}>
@@ -71,4 +57,4 @@ export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, playe
             </div>
         </>
     );
-});
+};

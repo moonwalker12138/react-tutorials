@@ -10,9 +10,9 @@ export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type,
 	const isTimeConsuming = (name === "Bunny" || name === "Donatello");
 
 	useEffect(() => {
-		if (isTimeConsuming) {
-			log({sender: SystemImg, message: `Creating ${name}...`});
-		}
+		// if (isTimeConsuming) {
+		// 	log({sender: SystemImg, message: `Creating ${name}...`});
+		// }
 		log({sender: character, message: greeting});
 	}, [name]);
 
@@ -24,7 +24,7 @@ export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type,
     });
 
     if (isTimeConsuming) {
-        sleep(1000);
+        // sleep(1000);
     }
 
 	return (

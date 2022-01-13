@@ -1,5 +1,5 @@
 import React, { Children, createContext, useContext, useState } from "react";
-import { ILoggerRef } from "../../Shared/Logger";
+// import { ILoggerRef } from "../../Shared/Logger";
 import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
 
 interface IBaseCubeProps {
@@ -8,7 +8,7 @@ interface IBaseCubeProps {
 
 interface ILoggerContext {
     pageName: string;
-    logger?: ILoggerRef | null;
+    // logger?: ILoggerRef | null;
 }
 
 const LoggerContext = createContext<ILoggerContext>({

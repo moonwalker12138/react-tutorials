@@ -9,6 +9,7 @@ import { Hare, Tortoise } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
+import { useLog } from "../../Utils";
 
 /* Update players' position during the race */
 export const UseLayoutEffectDemo = () => {
@@ -23,7 +24,7 @@ const Game = () => {
     const hare = Hare;
     const tortoise = Tortoise;
 
-    const { loggerRef } = useContext(RefContext);
+    const log = useLog();
 
     const reducer = getReducer(hare.getStep, tortoise.getStep);
     const [state, dispatch] = useReducer(reducer, {
@@ -41,14 +42,8 @@ const Game = () => {
     };
 
     useEffect(() => {
-        loggerRef?.current?.append({
-            sender: hare.character,
-            message: hare.greeting,
-        });
-        loggerRef?.current?.append({
-            sender: tortoise.character,
-            message: tortoise.greeting,
-        });
+        log({sender: hare.character, message: hare.greeting});
+        log({sender: tortoise.character, message: tortoise.greeting});
     }, []);
 
     useEffect(() => {
@@ -59,7 +54,7 @@ const Game = () => {
                     : state.winner === Winner.Hare
                     ? `Winner: Hare-${hare.name}!`
                     : `Winner: Tortoise-${tortoise.name}!`;
-            loggerRef?.current?.append({ sender: RefereeImg, message: result });
+            log({ sender: RefereeImg, message: result });
         }
     }, [state.winner]);
 

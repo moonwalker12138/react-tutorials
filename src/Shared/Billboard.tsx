@@ -1,6 +1,7 @@
-import React, { useImperativeHandle, useState } from "react";
+import React, { useImperativeHandle } from "react";
+import { useSyncState } from "../Utils";
 
-interface IChat {
+export interface IChat {
     sender: string;
     message: string;
 }
@@ -10,16 +11,21 @@ export interface ILoggerRef {
 }
 
 export const Billboard = React.forwardRef((props, ref) => {
-    const [content, setContent] = useState<IChat[]>([]);
+    // TODO: Why `contentRef.current` may be null?
+    const [contentRef, setContent] = useSyncState<IChat[]>([]);
 
-    const clearChats = () => setContent([]);
+    const clearChats = () => {
+        setContent([]);
+    };
 
     useImperativeHandle(ref, () => ({
         append: (chats: IChat | IChat[]) => {
             let filteredChats = (Array.isArray(chats) ? chats : [chats]).filter(
                 (chat) => chat.message !== ""
             );
-            setContent([...content, ...filteredChats]);
+            if (contentRef.current !== null) {
+                setContent([...contentRef.current, ...filteredChats]);
+            }
         },
     }));
 
@@ -33,9 +39,10 @@ export const Billboard = React.forwardRef((props, ref) => {
                 ></i>
             </div>
             <div className="d-flex flex-column">
-                {content.map(({ sender, message }) => (
-                    <Chat sender={sender} message={message} />
-                ))}
+                {contentRef.current !== null &&
+                    contentRef.current.map(({ sender, message }, index) => (
+                        <Chat sender={sender} message={message} key={index}/>
+                    ))}
             </div>
         </div>
     );
