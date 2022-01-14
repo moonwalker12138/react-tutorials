@@ -28,9 +28,9 @@ const Demo = () => {
 
     return (
         <div className="container">
-            <div className="row">
+            <div className="row align-items-center">
                 <div className="col">
-                    <div className="d-flex flex-column align-items-center justify-content-between">
+                    <div className="d-flex flex-column align-items-start justify-content-between">
                         <img src={hare.character} alt="" style={{opacity: "0.7", width: "40%"}} onClick={() => greeting(hare)} />
                         <img src={tortoise.character} alt="" style={{opacity: "0.7", width: "40%"}} onClick={() => greeting(tortoise)}/>
                         <img src={SystemImg} alt="" style={{opacity: "0.7", width: "40%"}} onClick={logging}/>

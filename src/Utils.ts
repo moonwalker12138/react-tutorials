@@ -109,8 +109,8 @@ export function useSyncState<T>(
 
 export function useLog() {
     const {loggerRef} = useContext(RefContext);
-    return (chat: IRecord) => {
-        loggerRef?.current?.append(chat);
+    return (record: IRecord) => {
+        loggerRef?.current?.append(record);
     };
 }
 

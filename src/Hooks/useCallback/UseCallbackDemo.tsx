@@ -26,10 +26,10 @@ export const UseCallbackDemo = () => {
 
 const Game = () => {
 	const [enableHareUseCallback, setEnableHareUseCallback] = useState(false);
-	const toggleHareUseCallback = () => setEnableHareUseCallback(!enableHareUseCallback);
+	const toggleHareUseCallback = useCallback(() => setEnableHareUseCallback(!enableHareUseCallback), [enableHareUseCallback]);
 
 	const [enableTortoiseUseCallback, setEnableTortoiseUseCallback] = useState(false);
-	const toggleTortoiseCallback = () => setEnableTortoiseUseCallback(!enableTortoiseUseCallback);
+	const toggleTortoiseCallback = useCallback(() => setEnableTortoiseUseCallback(!enableTortoiseUseCallback), [enableTortoiseUseCallback]);
 
     const [hare, setHare] = useState<PlayerEntity>(Hare);
     const onSwitchHare = () => setHare(hare === Hare ? Hare2 : Hare);
@@ -70,24 +70,21 @@ const Game = () => {
         }
     }, [state.winner]);
 
-    const prevHare = useRef<PlayerEntity>();
-    const prevSwitchHare = useRef<() => void>();
-    useEffect(() => {
-        // console.log("YF Game name", prevHare.current?.name, hare.name);
-        // console.log("YF Game hare", prevHare.current, hare);
-        // console.log("YF Game switchPlayer", prevHare.current?.name, hare.name);
-        console.log("YF Game", prevHare.current === hare, prevSwitchHare.current === switchHare);
-        prevHare.current = hare;
-        prevSwitchHare.current = switchHare;
-    });
+    // const prevHare = useRef<PlayerEntity>();
+    // const prevSwitchHare = useRef<() => void>();
+    // useEffect(() => {
+    //     // console.log("YF Game name", prevHare.current?.name, hare.name);
+    //     // console.log("YF Game hare", prevHare.current, hare);
+    //     // console.log("YF Game switchPlayer", prevHare.current?.name, hare.name);
+    //     console.log("YF Game", prevHare.current === hare, prevSwitchHare.current === switchHare);
+    //     prevHare.current = hare;
+    //     prevSwitchHare.current = switchHare;
+    // });
 
     return (
-		<>
-		<button className="btn btn-outline-primary me-5" onClick={toggleHareUseCallback}>{"Enable hare useCallback"}</button>
-		<button className="btn btn-outline-primary me-5" onClick={toggleTortoiseCallback}>{"Enable tortoise useCallback"}</button>
         <Container
             hareRaceTrack={
-                <RaceTrack player={hare} progress={state.hareProgress} onSwitchPlayer={switchHare} toggleUseCallback={undefined} />
+                <RaceTrack player={hare} progress={state.hareProgress} onSwitchPlayer={switchHare} toggleUseCallback={toggleHareUseCallback} />
             }
             tortoiseRaceTrack={
                 <RaceTrack
@@ -100,6 +97,5 @@ const Game = () => {
             onForward={onForward}
             onReset={onReset}
         />
-		</>
     );
 };

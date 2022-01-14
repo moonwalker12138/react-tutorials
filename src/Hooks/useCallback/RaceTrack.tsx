@@ -10,7 +10,7 @@ interface IRaceTrackProps {
     progress: number;
     player: PlayerEntity;
     onSwitchPlayer: () => void;
-	toggleUseCallback?: () => void;
+	toggleUseCallback: () => void;
 }
 
 export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, player, onSwitchPlayer, toggleUseCallback}) => {
@@ -38,8 +38,15 @@ export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, playe
     }, [progress]);
 
 	useEffect(() => {
-		log({sender: SystemImg, message: `${player.type}'s race track rendered.`})
-	});
+		const message = (
+			<>
+				<span className="me-2" style={{backgroundColor: "yellow"}}>{"WARNING"}</span>
+				<span className="me-2">{"Redundant rendering of"}</span>
+				<span style={{fontWeight: "bold"}}>{`${player.type}'s race track`}</span>
+			</>
+		);
+		log({sender: SystemImg, message: message})
+	}, [onSwitchPlayer, player.type]);
 
     return (
         <>

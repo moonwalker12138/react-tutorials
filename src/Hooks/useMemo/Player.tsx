@@ -18,7 +18,14 @@ export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type,
 
     useEffect(() => {
 		if (name === prevNameRef.current) {
-			log({sender: character, message: `I was rendered again. You're wasting time -_-`});
+			const message = (
+				<>
+					<span className="me-2" style={{backgroundColor: "yellow"}}>{"WARNING"}</span>
+					<span className="me-2">{"Redundant rendering of"}</span>
+					<span style={{fontWeight: "bold"}}>{`${type}-${name}`}</span>
+				</>
+			);
+			log({sender: SystemImg, message: message});
 		}
 		prevNameRef.current = name;
     });
