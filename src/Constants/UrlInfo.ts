@@ -10,5 +10,4 @@ export enum UrlInfo {
     UseDebugValue = "/UseDebugValue",
     UseState = "/UseState",
     UseEffect = "/UseEffect",
-    CustomHooks = "/CustomHooks",
 }

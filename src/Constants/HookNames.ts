@@ -9,5 +9,4 @@ export enum HookNames {
     UseDebugValue = "useDebugValue",
     UseState = "useState",
     UseEffect = "useEffect",
-    CustomHooks = "custom hooks",
 }

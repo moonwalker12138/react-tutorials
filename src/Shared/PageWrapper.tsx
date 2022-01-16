@@ -24,7 +24,7 @@ export const PageWrapper: React.FC<IPageWrapperProps> = ({ showBillboard=true, c
                     </div>
                     <div className="col">{children}</div>
                     {showBillboard && 
-                        <div className="col-3">
+                        <div className="col-4">
                             <Billboard ref={loggerRef} />
                         </div>
                     }

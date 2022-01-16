@@ -2,7 +2,9 @@ import { useContext, useEffect, useRef } from "react";
 import { RefContext } from "../../Shared/PageWrapper";
 import { ProgressBar } from "../../Shared/ProgressBar";
 import SystemImg from "../../Images/System.png";
-import { PlayerEntity } from "../../Model/Player";
+import { PlayerEntity, PlayerType } from "../../Model/Player";
+import { useLog } from "../../Utils";
+import { RecordRegion } from "../../Shared/Billboard";
 
 interface IRaceTrackProps {
     player: PlayerEntity;
@@ -10,7 +12,7 @@ interface IRaceTrackProps {
 }
 
 export const RaceTrack: React.FC<IRaceTrackProps> = ({ player, progress }) => {
-    const { loggerRef } = useContext(RefContext);
+    const log = useLog();
     const progressBarRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -18,11 +20,11 @@ export const RaceTrack: React.FC<IRaceTrackProps> = ({ player, progress }) => {
             if (progressBarRef.current) {
                 const progressBarWidth = progressBarRef.current.offsetWidth;
                 const offset = progressBarWidth * (progress / 10);
-                loggerRef?.current?.append({
-                    sender: SystemImg,
-                    message: `Latest offset of ${player.type}: ${offset.toFixed(
-                        0
-                    )}px`,
+                const region = player.type === PlayerType.Hare ? RecordRegion.HareRaceTrack : RecordRegion.TortoiseRaceTrack;
+                log({
+                    sender: player.character,
+                    message: `Offset: ${offset.toFixed(0)}px`,
+                    region: region,
                 });
             }
         };

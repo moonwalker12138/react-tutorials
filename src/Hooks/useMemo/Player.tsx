@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useMemo, useRef } from 'react'
-import { PlayerEntity } from '../../Model/Player';
+import { PlayerEntity, PlayerType } from '../../Model/Player';
 import { RefContext } from '../../Shared/PageWrapper';
 import { sleep, useLog, useMountEffect } from '../../Utils';
 import SystemImg from "../../Images/System.png";
+import { RecordRegion } from '../../Shared/Billboard';
 
 export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type, getStep}) => {
 	const log = useLog();
@@ -10,22 +11,14 @@ export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type,
 	const isTimeConsuming = (name === "Bunny" || name === "Donatello");
 
 	useEffect(() => {
-		// if (isTimeConsuming) {
-		// 	log({sender: SystemImg, message: `Creating ${name}...`});
-		// }
-		log({sender: character, message: greeting});
+		log({sender: character, message: greeting, region: RecordRegion.Chat});
 	}, [name]);
 
     useEffect(() => {
 		if (name === prevNameRef.current) {
-			const message = (
-				<>
-					<span className="me-2" style={{backgroundColor: "yellow"}}>{"WARNING"}</span>
-					<span className="me-2">{"Redundant rendering of"}</span>
-					<span style={{fontWeight: "bold"}}>{`${type}-${name}`}</span>
-				</>
-			);
-			log({sender: SystemImg, message: message});
+			const message = "Redundant rendering";
+			const region = type === PlayerType.Hare ? RecordRegion.HarePlayer : RecordRegion.TortoisePlayer;
+			log({sender: character, message: message, region: region});
 		}
 		prevNameRef.current = name;
     });

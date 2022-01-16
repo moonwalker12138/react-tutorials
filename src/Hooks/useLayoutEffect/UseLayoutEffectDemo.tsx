@@ -10,6 +10,7 @@ import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
 import { useLog } from "../../Utils";
+import { RecordRegion } from "../../Shared/Billboard";
 
 /* Update players' position during the race */
 export const UseLayoutEffectDemo = () => {
@@ -42,8 +43,8 @@ const Game = () => {
     };
 
     useEffect(() => {
-        log({sender: hare.character, message: hare.greeting});
-        log({sender: tortoise.character, message: tortoise.greeting});
+        log({sender: hare.character, message: hare.greeting, region: RecordRegion.Chat});
+        log({sender: tortoise.character, message: tortoise.greeting, region: RecordRegion.Chat});
     }, []);
 
     useEffect(() => {
@@ -54,7 +55,7 @@ const Game = () => {
                     : state.winner === Winner.Hare
                     ? `Winner: Hare-${hare.name}!`
                     : `Winner: Tortoise-${tortoise.name}!`;
-            log({ sender: RefereeImg, message: result });
+            log({ sender: RefereeImg, message: result, region: RecordRegion.Chat });
         }
     }, [state.winner]);
 

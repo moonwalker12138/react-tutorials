@@ -5,6 +5,8 @@ import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import { RaceTrack } from "./RaceTrack";
 import RefereeImg from "../../Images/Referee.png";
 import { Container } from "../../Shared/Container";
+import { useLog } from "../../Utils";
+import { RecordRegion } from "../../Shared/Billboard";
 
 /* Calculate the width of the progress bar and the offset of the image to determine the updated position */
 export const UseRefDemo = () => {
@@ -19,7 +21,7 @@ const Game = () => {
     const hare = Hare;
     const tortoise = Tortoise;
 
-    const { loggerRef } = useContext(RefContext);
+    const log = useLog();
 
     const reducer = getReducer(hare.getStep, tortoise.getStep);
     const [state, dispatch] = useReducer(reducer, {
@@ -37,14 +39,8 @@ const Game = () => {
     };
 
     useEffect(() => {
-        loggerRef?.current?.append({
-            sender: hare.character,
-            message: hare.greeting,
-        });
-        loggerRef?.current?.append({
-            sender: tortoise.character,
-            message: tortoise.greeting,
-        });
+        log({ sender: hare.character, message: hare.greeting, region: RecordRegion.Chat, });
+        log({ sender: tortoise.character, message: tortoise.greeting, region: RecordRegion.Chat });
     }, []);
 
     useEffect(() => {
@@ -55,7 +51,7 @@ const Game = () => {
                     : state.winner === Winner.Hare
                     ? `Winner: Hare-${hare.name}!`
                     : `Winner: Tortoise-${tortoise.name}!`;
-            loggerRef?.current?.append({ sender: RefereeImg, message: result });
+            log({ sender: RefereeImg, message: result, region: RecordRegion.Chat });
         }
     }, [state.winner]);
 

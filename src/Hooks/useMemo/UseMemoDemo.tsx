@@ -14,6 +14,7 @@ import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
 import { Player } from "./Player";
 import { useLog } from "../../Utils";
+import { RecordRegion } from "../../Shared/Billboard";
 
 /* Prevent redundant computation when component renders */
 export const UseMemoDemo = () => {
@@ -56,7 +57,7 @@ const Game = () => {
                     : state.winner === Winner.Hare
                     ? `Winner: Hare-${hare.name}!`
                     : `Winner: Tortoise-${tortoise.name}!`;
-            log({ sender: RefereeImg, message: result });
+            log({ sender: RefereeImg, message: result, region: RecordRegion.Chat });
         }
     }, [state.winner]);
 

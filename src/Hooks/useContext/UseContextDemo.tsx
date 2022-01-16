@@ -1,105 +1,84 @@
-import React, { Children, createContext, useContext, useState } from "react";
-// import { ILoggerRef } from "../../Shared/Logger";
+import React, {
+	useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useReducer,
+    useRef,
+    useState,
+} from "react";
 import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
+import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
+import { Container } from "../../Shared/Container";
+import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
+import RefereeImg from "../../Images/Referee.png";
+import { useLog } from "../../Utils";
+import { RecordRegion } from "../../Shared/Billboard";
+import { RaceTrack } from "./RaceTrack";
 
-interface IBaseCubeProps {
-    componentName: string;
-}
-
-interface ILoggerContext {
-    pageName: string;
-    // logger?: ILoggerRef | null;
-}
-
-const LoggerContext = createContext<ILoggerContext>({
-    pageName: "",
-});
-
-const PageName = "UseContextDemoPage";
-
+/* Broadcast global values through useContext  */
 export const UseContextDemo = () => {
     return (
-        <PageWrapper>
-            <LoggerContext.Provider value={{ pageName: PageName }}>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-9">
-                            <Cube />
-                        </div>
-                    </div>
-                </div>
-            </LoggerContext.Provider>
-        </PageWrapper>
-    );
-};
-
-const Cube = () => {
-    return (
-        <div className="container border border-5 p-5">
-            <h1 className="text-center mb-5">{PageName}</h1>
-            <A />
+        <div className="m-2 p-2" style={{border: "solid blue"}}>
+            <PageWrapper>
+                <Game />
+            </PageWrapper>
         </div>
     );
 };
 
-const A = () => {
-    return (
-        <BaseCube componentName="A">
-            <B />
-        </BaseCube>
-    );
-};
+const Game = () => {
+    const [hare, setHare] = useState<PlayerEntity>(Hare);
+    const switchHare = useCallback(() => setHare(hare === Hare ? Hare2 : Hare), [hare]);
 
-const B = () => {
-    return (
-        <BaseCube componentName="B">
-            <C />
-        </BaseCube>
-    );
-};
+    const [tortoise, setTortoise] = useState<PlayerEntity>(Tortoise);
+    const switchTortoise = useCallback(() => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise), [tortoise]);
+    
+    const log = useLog();
 
-const C = () => {
-    return (
-        <BaseCube componentName="C">
-            <D />
-        </BaseCube>
-    );
-};
+    const reducer = getReducer(hare.getStep, tortoise.getStep);
+    const [state, dispatch] = useReducer(reducer, {
+        hareProgress: 0,
+        tortoiseProgress: 0,
+        winner: undefined,
+    });
 
-const D = () => {
-    return (
-        <BaseCube componentName="D">
-            <E />
-        </BaseCube>
-    );
-};
-
-const E = () => {
-    return <BaseCube componentName="E" />;
-};
-
-const BaseCube: React.FC<IBaseCubeProps> = ({ componentName, children }) => {
-    const { pageName } = useContext(LoggerContext);
-    const { loggerRef } = useContext(RefContext);
-
-    const onClick = () => {
-        const content = `Component Name: ${componentName}, Page Name: ${pageName}`;
-        // loggerRef?.current?.say(content);
+    const onForward = () => {
+        dispatch({ type: ActionType.Forward });
     };
 
+    const onReset = () => {
+        dispatch({ type: ActionType.Reset });
+    }
+
+    useEffect(() => {
+        if (state.winner) {
+            const result =
+                state.winner === Winner.None
+                    ? "Tie!"
+                    : state.winner === Winner.Hare
+                    ? `Winner: Hare-${hare.name}!`
+                    : `Winner: Tortoise-${tortoise.name}!`;
+            log({ sender: RefereeImg, message: result, region: RecordRegion.Chat });
+        }
+    }, [state.winner]);
+
     return (
-        <div className="container border border-5 p-5 rounded-2">
-            <div className="row justify-content-between align-items-center">
-                <div className="col">
-                    <h2>{componentName}</h2>
-                </div>
-                <div className="col-2">
-                    <button className="btn btn-primary" onClick={onClick}>
-                        {"Log"}
-                    </button>
-                </div>
-            </div>
-            {children}
+        <div className="p-2" style={{border: "solid green"}}>
+            <Container
+                hareRaceTrack={
+                    <RaceTrack player={hare} progress={state.hareProgress} onSwitchPlayer={switchHare} />
+                }
+                tortoiseRaceTrack={
+                    <RaceTrack
+                        player={tortoise}
+                        progress={state.tortoiseProgress}
+                        onSwitchPlayer={switchTortoise}
+                    />
+                }
+                onForward={onForward}
+                onReset={onReset}
+            />
         </div>
     );
 };

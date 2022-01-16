@@ -1,6 +1,5 @@
 import React, { useImperativeHandle } from "react";
 import { useSyncState } from "../Utils";
-import SystemImg from "../Images/System.png";
 
 export enum RecordRegion {
     Chat = "Chat",
@@ -16,119 +15,120 @@ export interface IRecord {
     region: RecordRegion;
 }
 
+type IRecordProps = Omit<IRecord, "region">;
+interface IRecordListProps {
+    records: IRecordProps[];
+} 
+
+interface IHeaderProps {
+    title: string;
+    onClear: () => void;
+}
+
 export interface IBillboardRef {
-    append: (records: IRecord[]) => void;
+    append: (record: IRecord) => void;
 }
 
 type IBillboardState = Map<RecordRegion, IRecord[]>;
 
 export const Billboard = React.forwardRef((props, ref) => {
     // TODO: Why `contentRef.current` may be null?
-    // const [chatsRef, setChats] = useSyncState<IRecord[]>([]);
-    // const [harePlayerLogsRef, setHarePlayerLogs] = useSyncState<IRecord[]>([]);
-    // const [tortoisePlayerLogsRef, setTortoisePlayerLogs] = useSyncState<IRecord[]>([]);
-    // const [hareRaceTrackLogsRef, setHareRaceTrackLogs] = useSyncState<IRecord[]>([]);
-    // const [tortoiseRaceTrackLogsRef, setTortoiseRaceTrackLogs] = useSyncState<IRecord[]>([]);
-    // const [logsRef, setLogs] = useSyncState<IRecord[]>([]);
+    const [recordsRef, setRecords] = useSyncState<IBillboardState>(new Map([
+        [RecordRegion.Chat, []],
+        [RecordRegion.HarePlayer, []],
+        [RecordRegion.TortoisePlayer, []],
+        [RecordRegion.HareRaceTrack, []],
+        [RecordRegion.TortoiseRaceTrack, []],
+    ]));
 
-    const [recordsRef, setRecords] = useSyncState<IBillboardState>(new Map({
-        [RecordRegion.Chat]: [],
-        [RecordRegion.HarePlayer]: [],
-        [RecordRegion.TortoisePlayer]: [],
-        [RecordRegion.HareRaceTrack]: [],
-        [RecordRegion.TortoiseRaceTrack]: [],
-    }));
+    const clearChats = () => {
+        if (recordsRef.current) {
+            setRecords(recordsRef.current.set(RecordRegion.Chat, []));
+        }
+    };
 
-    const clearChats = () => setRecords({...recordsRef.current, [RecordRegion.Chat]: []});
+    const clearPlayerLogs = () => {
+        if (recordsRef.current) {
+            setRecords(recordsRef.current.set(RecordRegion.HarePlayer, []).set(RecordRegion.TortoisePlayer, []));
+        }
+    }
 
-    // const clearChats = () => setChats([]);
-    // const clearLogs = () => {
-    //     setHarePlayerLogs([]);
-    //     setTortoisePlayerLogs([]);
-    //     setHareRaceTrackLogs([]);
-    //     setTortoiseRaceTrackLogs([]);
-    // };
+    const clearRaceTrackLogs = () => {
+        if (recordsRef.current) {
+            setRecords(recordsRef.current.set(RecordRegion.HareRaceTrack, []).set(RecordRegion.TortoiseRaceTrack, []));
+        }
+    }
+
+    const getRecords = (region: RecordRegion) => {
+        return recordsRef.current?.get(region) ?? [];
+    };
+
+    const appendRecord = (record: IRecord) => {
+        const {sender, message, region} = record;
+        if (!recordsRef.current) return;
+        if (message === "" || message === <></> || message === undefined) return;
+        const newRecords = [...getRecords(region), {
+            sender: sender,
+            message: message,
+            region: region,
+        }];
+        setRecords(recordsRef.current.set(region, newRecords));
+    }
 
     useImperativeHandle(ref, () => ({
-        append: (records: IRecord[]) => {
-            records.forEach((record) => {
-                if (record.message === "" || record.message === <></> || record.message === undefined) return;
-                switch (record.region) {
-                    case RecordRegion.Chat:
-                        if (chatsRef.current) {
-                            setChats([...chatsRef.current, record]);
-                        }
-                        return;
-                    case RecordRegion.HarePlayer:
-                        if (harePlayerLogsRef.current) {
-                            setHarePlayerLogs([...harePlayerLogsRef.current, record]);
-                        }
-                        return;
-                    case RecordRegion.TortoisePlayer:
-                        if (tortoisePlayerLogsRef.current) {
-                            setHarePlayerLogs([...tortoisePlayerLogsRef.current, record]);
-                        }
-                        return;
-                    case RecordRegion.HareRaceTrack:
-                        if (hareRaceTrackLogsRef.current) {
-                            setHareRaceTrackLogs([...hareRaceTrackLogsRef.current, record]);
-                        }
-                    default:
-                        return;
-                }
-            });
-
-            if (chatsRef.current !== null) {
-                const chats = validRecords.filter((record) => record.sender !== SystemImg);
-                setChats([...chatsRef.current, ...chats]);
-            }
-
-            if (logsRef.current !== null) {
-                const logs = validRecords.filter((record) => record.sender === SystemImg);
-                setLogs([...logsRef.current, ...logs]);
-            }
-        },
+        append: appendRecord,
     }));
 
     return (
-        <div style={{ border: "solid", height: "80vh"}}>
+        <div className="p-2" style={{ border: "solid", height: "80vh"}}>
             <div style={{height: "30%", overflow: "auto"}}>
-                <Container name={"Chat"} records={chatsRef.current ?? []} onClear={clearChats} />
+                <Header title={"Chat"} onClear={clearChats} />
+                <div className="d-flex justify-content-between" style={{height: "80%", overflow: "auto"}}>
+                    <div style={{flex: 1}}><RecordList records={getRecords(RecordRegion.Chat)} /></div>
+                </div>
             </div>
-            <div style={{height: "70%", overflow: "auto", borderTop: "solid black"}}>
-                <Container name={"System"} records={logsRef.current ?? []} onClear={clearLogs} />
+            <div style={{height: "35%", borderTop: "solid"}}>
+                <Header title={"Player"} onClear={clearPlayerLogs} />
+                <div className="d-flex justify-content-between" style={{height: "80%", overflow: "auto"}}>
+                    <div style={{flex: 1}}><RecordList records={getRecords(RecordRegion.HarePlayer)} /></div>
+                    <div style={{flex: 1}}><RecordList records={getRecords(RecordRegion.TortoisePlayer)} /></div>
+                </div>
+            </div>
+            <div style={{height: "35%", borderTop: "solid"}}>
+                <Header title={"Race Track"} onClear={clearRaceTrackLogs} />
+                <div className="d-flex justify-content-between" style={{height: "80%", overflow: "auto"}}>
+                    <div style={{flex: 1}}><RecordList records={getRecords(RecordRegion.HareRaceTrack)} /></div>
+                    <div style={{flex: 1}}><RecordList records={getRecords(RecordRegion.TortoiseRaceTrack)} /></div>
+                </div>
             </div>
         </div>
     );
 });
 
-interface IContainerProps {
-    name: string;
-    records: IRecord[];
-    onClear: () => void;
-}
-
-const Container: React.FC<IContainerProps> = ({records, onClear, name}) => {
+export const Header: React.FC<IHeaderProps> = ({title, onClear}) => {
     return (
-        <div className="p-2">
-            <div className="d-flex justify-content-end px-1">
-                <span style={{textAlign: "center", fontWeight: "bold", fontSize: "1.5rem", flex: 1}}>{name}</span>
-                <i
-                    className="bi bi-trash"
-                    style={{ width: "1rem" }}
-                    onClick={onClear}
-                ></i>
-            </div>
-            <div className="d-flex flex-column">
-                {records.map(({ sender, message }, index) => (
-                    <Chat sender={sender} message={message} key={index}/>
-                ))}
-            </div>
+        <div className="d-flex justify-content-end align-items-center px-1">
+            <span style={{textAlign: "center", fontWeight: "bold", fontSize: "1.5rem", flex: 1}}>{title}</span>
+            <i
+                className="bi bi-trash"
+                style={{ width: "1rem" }}
+                onClick={onClear}
+            ></i>
         </div>
     );
-}
+};
 
-const Chat: React.FC<IRecord> = ({ sender, message }) => {
+export const RecordList: React.FC<IRecordListProps> = ({records}) => {
+    return (
+        <div className="d-flex flex-column">
+            {records.map(({ sender, message }, index) => (
+                <Record sender={sender} message={message} key={index}/>
+            ))}
+        </div>
+    );
+};
+
+const Record: React.FC<IRecordProps> = ({ sender, message }) => {
     return (
         <div className="d-flex p-1" style={{ alignItems: "flex-start" }}>
             <img

@@ -64,11 +64,6 @@ const Home: React.FC<{}> = () => {
         />,
         // Group
         <Card
-            title="custom hooks"
-            link={UrlInfo.CustomHooks}
-            style={{ backgroundColor: MORANDI_COLORS.Yellow }}
-        />,
-        <Card
             title="useDebugValue"
             link={UrlInfo.UseDebugValue}
             style={{ backgroundColor: MORANDI_COLORS.Yellow2 }}

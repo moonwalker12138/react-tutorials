@@ -14,6 +14,7 @@ import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
 import { useLog } from "../../Utils";
 import { RaceTrack } from "./RaceTrack";
+import { RecordRegion } from "../../Shared/Billboard";
 
 /* Prevent re-rendering child unnecessarily when parent re-renders */
 export const UseCallbackDemo = () => {
@@ -66,20 +67,9 @@ const Game = () => {
                     : state.winner === Winner.Hare
                     ? `Winner: Hare-${hare.name}!`
                     : `Winner: Tortoise-${tortoise.name}!`;
-            log({ sender: RefereeImg, message: result });
+            log({ sender: RefereeImg, message: result, region: RecordRegion.Chat });
         }
     }, [state.winner]);
-
-    // const prevHare = useRef<PlayerEntity>();
-    // const prevSwitchHare = useRef<() => void>();
-    // useEffect(() => {
-    //     // console.log("YF Game name", prevHare.current?.name, hare.name);
-    //     // console.log("YF Game hare", prevHare.current, hare);
-    //     // console.log("YF Game switchPlayer", prevHare.current?.name, hare.name);
-    //     console.log("YF Game", prevHare.current === hare, prevSwitchHare.current === switchHare);
-    //     prevHare.current = hare;
-    //     prevSwitchHare.current = switchHare;
-    // });
 
     return (
         <Container

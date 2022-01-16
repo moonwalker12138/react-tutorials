@@ -1,11 +1,9 @@
 import { UrlInfo } from "./Constants/UrlInfo";
 import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
-import { Bootcamp } from "./Bootstrap/Bootcamp";
 import Home from "./Home/Home";
 import { Error } from "./Error";
 import { UseRefDemo } from "./Hooks/useRef/UseRefDemo";
-import { getCSSValue } from "./Utils";
 import { UseImperativeHandleDemo } from "./Hooks/useImperativeHandle/UseImperativeHandleDemo";
 import { UseContextDemo } from "./Hooks/useContext/UseContextDemo";
 import { UseMemoDemo } from "./Hooks/useMemo/UseMemoDemo";
@@ -15,9 +13,7 @@ import { UseReducerDemo } from "./Hooks/useReducer/UseReducerDemo";
 import { UseDebugValueDemo } from "./Hooks/useDebugValue/useDebugValueDemo";
 import { UseStateDemo } from "./Hooks/useState/UseStateDemo";
 import { UseEffectDemo } from "./Hooks/useEffect/UseEffectDemo";
-import { CustomHooksDemo } from "./Hooks/customHooks/CustomHooksDemo";
 import { Header } from "./Shared/Header";
-import { Sidebar } from "./Shared/Sidebar";
 import React from "react";
 
 function App() {
@@ -57,10 +53,6 @@ function App() {
                     <Route
                         path={UrlInfo.UseEffect}
                         element={<UseEffectDemo />}
-                    />
-                    <Route
-                        path={UrlInfo.CustomHooks}
-                        element={<CustomHooksDemo />}
                     />
                     <Route path={"*"} element={<Error />} />
                 </Routes>

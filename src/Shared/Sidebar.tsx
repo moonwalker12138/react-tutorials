@@ -15,7 +15,6 @@ export const Sidebar = () => {
         { name: HookNames.UseCallback, url: UrlInfo.UseCallback },
         { name: HookNames.UseImperativeHandle, url: UrlInfo.UseImperativeHandle},
         { name: HookNames.UseContext, url: UrlInfo.UseContext },
-        { name: HookNames.CustomHooks, url: UrlInfo.CustomHooks },
         { name: HookNames.UseDebugValue, url: UrlInfo.UseDebugValue },
     ];
 

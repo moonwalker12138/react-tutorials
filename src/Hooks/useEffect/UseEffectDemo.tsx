@@ -5,6 +5,8 @@ import RefereeImg from "../../Images/Referee.png";
 import { Container } from "../../Shared/Container";
 import { Hare, Tortoise } from "../../Model/Player";
 import { ActionType, getReducer, Winner } from "../useReducer/UseReducerDemo";
+import { useLog } from "../../Utils";
+import { RecordRegion } from "../../Shared/Billboard";
 
 /* Output the winner to billboard once determined */
 export const UseEffectDemo = () => {
@@ -19,7 +21,7 @@ const Game = () => {
     const hare = Hare;
     const tortoise = Tortoise;
 
-    const { loggerRef } = useContext(RefContext);
+    const log = useLog();
 
     const reducer = getReducer(hare.getStep, tortoise.getStep);
     const [state, dispatch] = useReducer(reducer, {
@@ -44,15 +46,13 @@ const Game = () => {
                     : state.winner === Winner.Hare
                     ? `Winner: Hare-${hare.name}!`
                     : `Winner: Tortoise-${tortoise.name}!`;
-            loggerRef?.current?.append({ sender: RefereeImg, message: result });
+            log({ sender: RefereeImg, message: result, region: RecordRegion.Chat });
         }
     }, [state.winner]);
 
     useEffect(() => {
-        loggerRef?.current?.append([
-            { sender: hare.character, message: hare.greeting },
-            { sender: tortoise.character, message: tortoise.greeting },
-        ]);
+        log({ sender: hare.character, message: hare.greeting, region: RecordRegion.Chat });
+        log({ sender: tortoise.character, message: tortoise.greeting, region: RecordRegion.Chat });
     }, []);
 
     return (
