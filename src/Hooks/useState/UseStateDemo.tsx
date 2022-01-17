@@ -7,7 +7,7 @@ import { Hare, Tortoise } from "../../Model/Player";
 /* Create players and race tracks */
 export const UseStateDemo = () => {
     return (
-        <PageWrapper>
+        <PageWrapper showBillboard={false}>
             <Game />
         </PageWrapper>
     );

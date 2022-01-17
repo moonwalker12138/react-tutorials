@@ -1,15 +1,11 @@
-import React, { useContext, useEffect, useMemo, useRef } from 'react'
+import React, {  useEffect, useRef } from 'react'
 import { PlayerEntity, PlayerType } from '../Model/Player';
-import { RefContext } from '../PageWrapper/PageWrapper';
-import { sleep, useLog, useMountEffect } from '../Utils';
-import SystemImg from "../../Images/System.png";
+import {  useLog,  } from '../Utils';
 import { RecordRegion } from '../PageWrapper/Billboard';
 
-interface IPlayerProps extends PlayerEntity {
-	mute?: boolean;
-}
+interface IPlayerProps extends PlayerEntity {}
 
-export const Player: React.FC<IPlayerProps> = ({name, character, greeting, type, mute=true}) => {
+export const Player: React.FC<IPlayerProps> = ({name, character, greeting, type}) => {
 	const log = useLog();
 	const prevNameRef = useRef<string>();
 	const isTimeConsuming = (name === "Bunny" || name === "Donatello");

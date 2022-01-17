@@ -29,7 +29,7 @@ interface IAction {
 /* Determine if the game is over and who is the winner */
 export const UseReducerDemo = () => {
     return (
-        <PageWrapper>
+        <PageWrapper showBillboard={false}>
             <Game />
         </PageWrapper>
     );
