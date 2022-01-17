@@ -3,7 +3,7 @@ import { PlayerEntity, PlayerType } from "../../Model/Player";
 import { ProgressBar } from "../../Shared/ProgressBar";
 import { useLog } from "../../Utils";
 import SystemImg from "../../Images/System.png";
-import { Player } from "../useMemo/Player";
+import { Player } from "../../Shared/Player";
 import React from "react";
 import { RecordRegion } from "../../PageWrapper/Billboard";
 

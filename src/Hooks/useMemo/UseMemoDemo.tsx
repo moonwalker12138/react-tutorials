@@ -12,7 +12,7 @@ import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Play
 import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
-import { Player } from "./Player";
+import { Player } from "../../Shared/Player";
 import { useLog } from "../../Utils";
 import { RecordRegion } from "../../PageWrapper/Billboard";
 
