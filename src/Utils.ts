@@ -7,8 +7,8 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { IRecord } from "./Shared/Billboard";
-import { RefContext } from "./Shared/PageWrapper";
+import { IRecord } from "./PageWrapper/Billboard";
+import { RefContext } from "./PageWrapper/PageWrapper";
 
 export function getCSSValue(name: string) {
     return getComputedStyle(document.documentElement).getPropertyValue(name);
@@ -81,18 +81,6 @@ export function useUnmountEffect(effect: () => void) {
 //     return ref;
 // }
 
-// export function useSyncState<T>(initValue: T): [React.RefObject<T>, (newValue: T) => void] {
-//     const forceUpdate = useForceUpdate();
-
-//     const ref = useRef(initValue);
-//     const setValue = (newValue: T) => {
-//         ref.current = newValue;
-//         forceUpdate();
-//     };
-
-//     return [ref, setValue];
-// }
-
 export function useSyncState<T>(
     initValue: T
 ): [React.RefObject<T>, (newValue: T) => void] {
@@ -103,6 +91,8 @@ export function useSyncState<T>(
         ref.current = newValue;
         forceUpdate();
     };
+
+    useDebugValue(ref.current);
 
     return [ref, setValue];
 }

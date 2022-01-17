@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Hare, PlayerEntity, Tortoise } from "../../Model/Player";
-import { IBillboardRef, RecordRegion } from "../../Shared/Billboard";
-import { PageWrapper } from "../../Shared/PageWrapper";
+import { IBillboardRef, RecordRegion } from "../../PageWrapper/Billboard";
+import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { Billboard } from "./Billboard";
 
 export const UseImperativeHandleDemo = () => {

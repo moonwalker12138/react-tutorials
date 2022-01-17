@@ -7,14 +7,14 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
+import { PageWrapper, RefContext } from "../../PageWrapper/PageWrapper";
 import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
 import { useLog } from "../../Utils";
 import { RaceTrack } from "./RaceTrack";
-import { RecordRegion } from "../../Shared/Billboard";
+import { RecordRegion } from "../../PageWrapper/Billboard";
 
 /* Prevent re-rendering child unnecessarily when parent re-renders */
 export const UseCallbackDemo = () => {

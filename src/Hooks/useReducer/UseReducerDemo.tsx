@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { PageWrapper } from "../../Shared/PageWrapper";
+import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { getRandomBoolean } from "../../Utils";
 import { Container } from "../../Shared/Container";
 import { RaceTrack } from "../useState/RaceTrack";

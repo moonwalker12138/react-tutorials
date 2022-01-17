@@ -5,7 +5,7 @@ import { useLog } from "../../Utils";
 import SystemImg from "../../Images/System.png";
 import { Player } from "../useMemo/Player";
 import React from "react";
-import { RecordRegion } from "../../Shared/Billboard";
+import { RecordRegion } from "../../PageWrapper/Billboard";
 
 interface IRaceTrackProps {
     progress: number;

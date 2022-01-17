@@ -1,10 +1,10 @@
 import { useContext, useEffect, useRef } from "react";
-import { RefContext } from "../../Shared/PageWrapper";
+import { RefContext } from "../../PageWrapper/PageWrapper";
 import { ProgressBar } from "../../Shared/ProgressBar";
 import SystemImg from "../../Images/System.png";
 import { PlayerEntity, PlayerType } from "../../Model/Player";
 import { useLog } from "../../Utils";
-import { RecordRegion } from "../../Shared/Billboard";
+import { RecordRegion } from "../../PageWrapper/Billboard";
 
 interface IRaceTrackProps {
     player: PlayerEntity;

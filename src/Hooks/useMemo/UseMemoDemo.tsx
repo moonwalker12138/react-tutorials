@@ -6,7 +6,7 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { PageWrapper,  } from "../../Shared/PageWrapper";
+import { PageWrapper,  } from "../../PageWrapper/PageWrapper";
 import { RaceTrack } from "./RaceTrack";
 import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
@@ -14,7 +14,7 @@ import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
 import { Player } from "./Player";
 import { useLog } from "../../Utils";
-import { RecordRegion } from "../../Shared/Billboard";
+import { RecordRegion } from "../../PageWrapper/Billboard";
 
 /* Prevent redundant computation when component renders */
 export const UseMemoDemo = () => {

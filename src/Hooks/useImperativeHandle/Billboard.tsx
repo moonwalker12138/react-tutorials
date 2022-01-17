@@ -1,6 +1,6 @@
 import React, { useImperativeHandle } from "react";
 import { Hare, PlayerEntity, Tortoise } from "../../Model/Player";
-import { IRecord, RecordRegion, RecordList } from "../../Shared/Billboard";
+import { IRecord, RecordRegion, RecordList } from "../../PageWrapper/Billboard";
 import { useSyncState } from "../../Utils";
 
 export interface IBillboardRef {

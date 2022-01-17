@@ -13,7 +13,7 @@ import { UseReducerDemo } from "./Hooks/useReducer/UseReducerDemo";
 import { UseDebugValueDemo } from "./Hooks/useDebugValue/useDebugValueDemo";
 import { UseStateDemo } from "./Hooks/useState/UseStateDemo";
 import { UseEffectDemo } from "./Hooks/useEffect/UseEffectDemo";
-import { Header } from "./Shared/Header";
+import { Header } from "./PageWrapper/Header";
 import React from "react";
 
 function App() {

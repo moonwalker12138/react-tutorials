@@ -3,14 +3,14 @@ import React, {
     useEffect,
     useReducer,
 } from "react";
-import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
+import { PageWrapper, RefContext } from "../../PageWrapper/PageWrapper";
 import { RaceTrack } from "./RaceTrack";
 import { Hare, Tortoise } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
 import { useLog } from "../../Utils";
-import { RecordRegion } from "../../Shared/Billboard";
+import { RecordRegion } from "../../PageWrapper/Billboard";
 
 /* Update players' position during the race */
 export const UseLayoutEffectDemo = () => {

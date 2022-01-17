@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useMemo, useRef } from 'react'
 import { PlayerEntity, PlayerType } from '../../Model/Player';
-import { RefContext } from '../../Shared/PageWrapper';
+import { RefContext } from '../../PageWrapper/PageWrapper';
 import { sleep, useLog, useMountEffect } from '../../Utils';
 import SystemImg from "../../Images/System.png";
-import { RecordRegion } from '../../Shared/Billboard';
+import { RecordRegion } from '../../PageWrapper/Billboard';
 
 export const Player: React.FC<PlayerEntity> = ({name, character, greeting, type, getStep}) => {
 	const log = useLog();

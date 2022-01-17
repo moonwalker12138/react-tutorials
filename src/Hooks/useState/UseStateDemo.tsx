@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PageWrapper } from "../../Shared/PageWrapper";
+import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { Container } from "../../Shared/Container";
 import { RaceTrack } from "./RaceTrack";
 import { Hare, Tortoise } from "../../Model/Player";

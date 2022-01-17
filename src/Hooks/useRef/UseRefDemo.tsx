@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useReducer, useRef } from "react";
 import { Hare, Tortoise } from "../../Model/Player";
-import { PageWrapper, RefContext } from "../../Shared/PageWrapper";
+import { PageWrapper, RefContext } from "../../PageWrapper/PageWrapper";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import { RaceTrack } from "./RaceTrack";
 import RefereeImg from "../../Images/Referee.png";
 import { Container } from "../../Shared/Container";
 import { useLog } from "../../Utils";
-import { RecordRegion } from "../../Shared/Billboard";
+import { RecordRegion } from "../../PageWrapper/Billboard";
 
 /* Calculate the width of the progress bar and the offset of the image to determine the updated position */
 export const UseRefDemo = () => {
