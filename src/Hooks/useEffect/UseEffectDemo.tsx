@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import { PageWrapper, RefContext } from "../../PageWrapper/PageWrapper";
-import { RaceTrack } from "../useState/RaceTrack";
+import { RaceTrack } from "../../Shared/RaceTrack";
+// import { RaceTrack } from "../useState/RaceTrack";
 import RefereeImg from "../../Images/Referee.png";
 import { Container } from "../../Shared/Container";
 import { Hare, Tortoise } from "../../Model/Player";
@@ -50,20 +51,16 @@ const Game = () => {
         }
     }, [state.winner]);
 
-    useEffect(() => {
-        log({ sender: hare.character, message: hare.greeting, region: RecordRegion.Chat });
-        log({ sender: tortoise.character, message: tortoise.greeting, region: RecordRegion.Chat });
-    }, []);
-
     return (
         <Container
             hareRaceTrack={
-                <RaceTrack player={hare} progress={state.hareProgress} />
+                <RaceTrack player={hare} progress={state.hareProgress} isStatic />
             }
             tortoiseRaceTrack={
                 <RaceTrack
                     player={tortoise}
                     progress={state.tortoiseProgress}
+                    isStatic
                 />
             }
             onForward={onForward}

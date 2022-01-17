@@ -1,5 +1,5 @@
 import React, { useImperativeHandle } from "react";
-import { Hare, PlayerEntity, Tortoise } from "../../Model/Player";
+import { Hare, IPlayerEntity, Tortoise } from "../../Model/Player";
 import { IRecord, RecordRegion, RecordList } from "../../PageWrapper/Billboard";
 import { useSyncState } from "../../Utils";
 
@@ -28,7 +28,7 @@ export const Billboard = React.forwardRef((props, ref) => {
         return recordsRef.current ?? [];
     };
 
-	const greeting = (player: PlayerEntity) => {
+	const greeting = (player: IPlayerEntity) => {
         if (!recordsRef.current) return;
 		const record: IRecord = {sender: player.character, message: player.greeting, region: RecordRegion.Chat};
 		setRecords([...recordsRef.current, record]);

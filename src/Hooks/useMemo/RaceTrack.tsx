@@ -1,11 +1,11 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { PlayerEntity } from "../../Model/Player";
+import { IPlayerEntity } from "../../Model/Player";
 import { ProgressBar } from "../../Shared/ProgressBar";
 import { Player } from "../../Shared/Player";
 
 interface IRaceTrackProps {
     progress: number;
-    player: PlayerEntity;
+    player: IPlayerEntity;
     onSwitchPlayer: () => void;
 }
 

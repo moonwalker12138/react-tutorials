@@ -1,12 +1,12 @@
 import { useRef } from "react";
-import { Hare, PlayerEntity, Tortoise } from "../../Model/Player";
+import { Hare, IPlayerEntity, Tortoise } from "../../Model/Player";
 import { IBillboardRef, RecordRegion } from "../../PageWrapper/Billboard";
 import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { Billboard } from "./Billboard";
 
 export const UseImperativeHandleDemo = () => {
     return (
-        <PageWrapper showBillboard={false}>
+        <PageWrapper >
             <Demo />
         </PageWrapper>
     );
@@ -18,7 +18,7 @@ const Demo = () => {
 
     const billboardRef = useRef<IBillboardRef>(null);
 
-    const greeting = (player: PlayerEntity) => {
+    const greeting = (player: IPlayerEntity) => {
         billboardRef.current?.append({sender: player.character, message: player.greeting, region: RecordRegion.Chat});
     }
 

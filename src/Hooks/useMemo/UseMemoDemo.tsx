@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { PageWrapper,  } from "../../PageWrapper/PageWrapper";
 import { RaceTrack } from "./RaceTrack";
-import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
+import { Hare, Hare2, IPlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
@@ -26,10 +26,10 @@ export const UseMemoDemo = () => {
 };
 
 const Game = () => {
-    const [hare, setHare] = useState<PlayerEntity>(Hare);
+    const [hare, setHare] = useState<IPlayerEntity>(Hare);
     const switchHare = () => setHare(hare === Hare ? Hare2 : Hare);
 
-    const [tortoise, setTortoise] = useState<PlayerEntity>(Tortoise);
+    const [tortoise, setTortoise] = useState<IPlayerEntity>(Tortoise);
     const switchTortoise = () => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise);
     
     const log = useLog();

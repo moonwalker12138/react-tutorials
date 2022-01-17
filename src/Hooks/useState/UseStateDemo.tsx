@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { Container } from "../../Shared/Container";
-import { RaceTrack } from "./RaceTrack";
+// import { RaceTrack } from "./RaceTrack";
+import { RaceTrack } from "../../Shared/RaceTrack";
 import { Hare, Tortoise } from "../../Model/Player";
 
 /* Create players and race tracks */
 export const UseStateDemo = () => {
     return (
-        <PageWrapper showBillboard={false}>
+        <PageWrapper>
             <Game />
         </PageWrapper>
     );
@@ -39,9 +40,9 @@ const Game = () => {
 
     return (
         <Container
-            hareRaceTrack={<RaceTrack player={hare} progress={hareProgress} />}
+            hareRaceTrack={<RaceTrack player={hare} progress={hareProgress} isStatic/>}
             tortoiseRaceTrack={
-                <RaceTrack player={tortoise} progress={tortoiseProgress} />
+                <RaceTrack player={tortoise} progress={tortoiseProgress} isStatic />
             }
             onForward={onForward}
             onReset={onReset}

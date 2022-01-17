@@ -1,15 +1,16 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { PlayerEntity, PlayerType } from "../../Model/Player";
+import { IPlayerEntity, PlayerType } from "../../Model/Player";
 import { ProgressBar } from "../../Shared/ProgressBar";
 import { useLog } from "../../Utils";
 import SystemImg from "../../Images/System.png";
 import { Player } from "../../Shared/Player";
 import React from "react";
 import { RecordRegion } from "../../PageWrapper/Billboard";
+import { useUpdatePosition } from "../../CustomHooks";
 
 interface IRaceTrackProps {
     progress: number;
-    player: PlayerEntity;
+    player: IPlayerEntity;
     onSwitchPlayer: () => void;
 	toggleUseCallback: () => void;
 }
@@ -21,12 +22,13 @@ export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, playe
     const playerRef = useRef<HTMLImageElement>(null);
 
     const prevProgressRef = useRef<number>();
-    const prevPlayerRef = useRef<PlayerEntity>();
+    const prevPlayerRef = useRef<IPlayerEntity>();
 
     const [enableUseMemo, setEnableUseMemo] = useState(false);
     const memoriedPlayer = useMemo(() => <Player {...player} />, [player]);
     const playerElement: JSX.Element = enableUseMemo ? memoriedPlayer : <Player {...player} />;
 
+    // useUpdatePosition(progressBarRef, playerRef, progress);
     useLayoutEffect(() => {
         const updatePlayerPosition = () => {
             if (progressBarRef.current && playerRef.current) {

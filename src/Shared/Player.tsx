@@ -1,9 +1,9 @@
 import React, {  useEffect, useRef } from 'react'
-import { PlayerEntity, PlayerType } from '../Model/Player';
+import { IPlayerEntity, PlayerType } from '../Model/Player';
 import {  useLog,  } from '../Utils';
 import { RecordRegion } from '../PageWrapper/Billboard';
 
-interface IPlayerProps extends PlayerEntity {}
+interface IPlayerProps extends IPlayerEntity {}
 
 export const Player: React.FC<IPlayerProps> = ({name, character, greeting, type}) => {
 	const log = useLog();

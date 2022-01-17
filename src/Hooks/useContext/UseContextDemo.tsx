@@ -8,7 +8,7 @@ import React, {
     useState,
 } from "react";
 import { PageWrapper, RefContext } from "../../PageWrapper/PageWrapper";
-import { Hare, Hare2, PlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
+import { Hare, Hare2, IPlayerEntity, Tortoise, Tortoise2 } from "../../Model/Player";
 import { Container } from "../../Shared/Container";
 import { ActionType, Winner, getReducer } from "../useReducer/UseReducerDemo";
 import RefereeImg from "../../Images/Referee.png";
@@ -28,10 +28,10 @@ export const UseContextDemo = () => {
 };
 
 const Game = () => {
-    const [hare, setHare] = useState<PlayerEntity>(Hare);
+    const [hare, setHare] = useState<IPlayerEntity>(Hare);
     const switchHare = useCallback(() => setHare(hare === Hare ? Hare2 : Hare), [hare]);
 
-    const [tortoise, setTortoise] = useState<PlayerEntity>(Tortoise);
+    const [tortoise, setTortoise] = useState<IPlayerEntity>(Tortoise);
     const switchTortoise = useCallback(() => setTortoise(tortoise === Tortoise ? Tortoise2 : Tortoise), [tortoise]);
     
     const log = useLog();

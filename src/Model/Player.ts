@@ -9,7 +9,7 @@ export enum PlayerType {
     Tortoise = "Tortoise",
 }
 
-export interface PlayerEntity {
+export interface IPlayerEntity {
     name: string;
     character: string;
     greeting: string;
@@ -17,7 +17,7 @@ export interface PlayerEntity {
     getStep: () => number;
 }
 
-export const Hare: PlayerEntity = {
+export const Hare: IPlayerEntity = {
     name: "Judy",
     character: HareImg,
     greeting: `Hello, I'm Judy!`,
@@ -27,7 +27,7 @@ export const Hare: PlayerEntity = {
     },
 };
 
-export const Hare2: PlayerEntity = {
+export const Hare2: IPlayerEntity = {
     name: "Bunny",
     character: BunnyImg,
     greeting: `Hello, I'm Bunny!`,
@@ -37,7 +37,7 @@ export const Hare2: PlayerEntity = {
     },
 };
 
-export const Tortoise: PlayerEntity = {
+export const Tortoise: IPlayerEntity = {
     name: "Flash",
     character: TortoiseImg,
     greeting: `H~e~l~l~o, I~~a~m~~F~l~a~s~h!`,
@@ -47,7 +47,7 @@ export const Tortoise: PlayerEntity = {
     },
 };
 
-export const Tortoise2: PlayerEntity = {
+export const Tortoise2: IPlayerEntity = {
     name: "Donatello",
     character: DonatelloImg,
     greeting: `It's Donatello. Give it all ya got`,

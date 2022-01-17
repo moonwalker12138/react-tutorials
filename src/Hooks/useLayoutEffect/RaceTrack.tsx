@@ -1,9 +1,9 @@
 import { useLayoutEffect, useRef } from "react";
-import { PlayerEntity } from "../../Model/Player";
+import { IPlayerEntity } from "../../Model/Player";
 import { ProgressBar } from "../../Shared/ProgressBar";
 
 interface IRaceTrackProps {
-    player: PlayerEntity;
+    player: IPlayerEntity;
     progress: number;
 }
 
