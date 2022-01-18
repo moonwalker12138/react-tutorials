@@ -1,57 +1,29 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { IPlayerEntity, PlayerType } from "../../Model/Player";
+import { useMemo, useRef, useState } from "react";
+import { IPlayerEntity } from "../../Model/Player";
 import { ProgressBar } from "../../Shared/ProgressBar";
-import { useLog } from "../../Utils";
-import SystemImg from "../../Images/System.png";
 import { Player } from "../../Shared/Player";
 import React from "react";
-import { RecordRegion } from "../../PageWrapper/Billboard";
-import { useUpdatePosition } from "../../CustomHooks";
+import { usePlayerElement, useRaceTrackRedundantRenderWarning, useUpdatePosition } from "../../CustomHooks";
 
 interface IRaceTrackProps {
     progress: number;
     player: IPlayerEntity;
-    onSwitchPlayer: () => void;
-	toggleUseCallback: () => void;
+    onSwitchPlayer?: () => void;
+	toggleUseCallback?: () => void;
 }
 
 export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, player, onSwitchPlayer, toggleUseCallback}) => {
-    const log = useLog();
-
     const progressBarRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef<HTMLImageElement>(null);
 
-    const prevProgressRef = useRef<number>();
-    const prevPlayerRef = useRef<IPlayerEntity>();
 
-    const [enableUseMemo, setEnableUseMemo] = useState(false);
-    const memoriedPlayer = useMemo(() => <Player {...player} />, [player]);
-    const playerElement: JSX.Element = enableUseMemo ? memoriedPlayer : <Player {...player} />;
+    const playerElement = usePlayerElement(player);
+    // const [enableUseMemo, setEnableUseMemo] = useState(false);
+    // const memoriedPlayer = useMemo(() => <Player {...player} />, [player]);
+    // const playerElement: JSX.Element = enableUseMemo ? memoriedPlayer : <Player {...player} />;
 
-    // useUpdatePosition(progressBarRef, playerRef, progress);
-    useLayoutEffect(() => {
-        const updatePlayerPosition = () => {
-            if (progressBarRef.current && playerRef.current) {
-                const progressBarWidth = progressBarRef.current.offsetWidth;
-                const offset = progressBarWidth * (progress / 10);
-                playerRef.current.style.left = `${offset}px`;
-            }
-        };
-
-        window.addEventListener("resize", updatePlayerPosition);
-        updatePlayerPosition();
-        return () => window.removeEventListener("resize", updatePlayerPosition);
-    }, [progress]);
-
-	useEffect(() => {
-        if (progress === prevProgressRef.current && player === prevPlayerRef.current) {
-            const message = "Redundant rendering";
-            const region = player.type === PlayerType.Hare ? RecordRegion.HareRaceTrack : RecordRegion.TortoiseRaceTrack;
-            log({sender: player.character, message: message, region: region});
-        }
-        prevProgressRef.current = progress;
-        prevPlayerRef.current = player;
-	});
+    useUpdatePosition(progressBarRef, playerRef, progress);
+    useRaceTrackRedundantRenderWarning(progress, player);
 
     return (
         <>
@@ -61,7 +33,7 @@ export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(({progress, playe
                     <span style={{fontFamily: "Comic Sans MS"}}>{"Switch player"}</span>
                 </div>
                 <div className="form-check form-switch me-5">
-                    <input type="checkbox" role="switch" className="form-check-input" onClick={() => setEnableUseMemo(!enableUseMemo)} />
+                    <input type="checkbox" role="switch" className="form-check-input" onClick={() => {}} />
                     <label htmlFor="" className="form-check-label" style={{fontFamily: "Comic Sans MS"}}>{"Enable useMemo"}</label>
                 </div>
                 <div className="form-check form-switch me-5">

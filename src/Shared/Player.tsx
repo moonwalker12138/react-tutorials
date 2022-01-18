@@ -1,30 +1,16 @@
-import React, {  useEffect, useRef } from 'react'
-import { IPlayerEntity, PlayerType } from '../Model/Player';
-import {  useLog,  } from '../Utils';
-import { RecordRegion } from '../PageWrapper/Billboard';
+import React  from 'react'
+import { IPlayerEntity  } from '../Model/Player';
+import {  isTimeConsuming, sleep } from '../Utils';
+import { useGreeting, usePlayerRedundantRenderWarning } from '../CustomHooks';
 
 interface IPlayerProps extends IPlayerEntity {}
 
 export const Player: React.FC<IPlayerProps> = ({name, character, greeting, type}) => {
-	const log = useLog();
-	const prevNameRef = useRef<string>();
-	const isTimeConsuming = (name === "Bunny" || name === "Donatello");
+	useGreeting(character, greeting, name);
+	usePlayerRedundantRenderWarning(name, type, character);
 
-	useEffect(() => {
-		log({sender: character, message: greeting, region: RecordRegion.Chat});
-	}, [name]);
-
-	useEffect(() => {
-		if (name === prevNameRef.current) {
-			const message = "Redundant rendering";
-			const region = type === PlayerType.Hare ? RecordRegion.HarePlayer : RecordRegion.TortoisePlayer;
-			log({sender: character, message: message, region: region});
-		}
-		prevNameRef.current = name;
-	});
-
-    if (isTimeConsuming) {
-        // sleep(1000);
+    if (isTimeConsuming(name)) {
+        sleep(500);
     }
 
 	return (

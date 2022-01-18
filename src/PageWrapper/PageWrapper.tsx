@@ -14,21 +14,21 @@ interface IPlayerConfig {
 
 interface IRaceTrackConfig {
     isStatic: boolean;
-    enableSwitchPlayer: boolean;
     enableUseMemo: boolean;
-    enableUseCallback: boolean;
-    enableRedundantRenderWarning: false,
+    enableRedundantRenderWarning: boolean,
 }
 
 interface IGameConfig {
     enableReferee: boolean;
+    enableSwitchPlayer: boolean;
+    enableUseCallback: boolean;
 }
 
 interface IPageWrapperConfig {
     showBillboard: boolean;
 }
 
-interface IConfigContext {
+export interface IConfigContext {
     player: IPlayerConfig;
     raceTrack: IRaceTrackConfig;
     game: IGameConfig;
@@ -50,13 +50,13 @@ export const DefaultConfig: IConfigContext = {
     },
     raceTrack: {
         isStatic: false,
-        enableSwitchPlayer: true,
         enableUseMemo: false,
-        enableUseCallback: false,
         enableRedundantRenderWarning: false,
     },
     game: {
         enableReferee: true,
+        enableSwitchPlayer: true,
+        enableUseCallback: false,
     },
     pageWrapper: {
         showBillboard: true,
