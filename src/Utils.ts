@@ -44,15 +44,18 @@ export function getRandomBoolean(): boolean {
 }
 
 export function isTimeConsuming(name: string): boolean {
-	return (name === "Bunny" || name === "Donatello");
+    return name === "Bunny" || name === "Donatello";
 }
 
-export const getReducer = (hareStep: () => number, tortoiseStep: () => number) => {
+export const getReducer = (
+    hareStep: () => number,
+    tortoiseStep: () => number
+) => {
     const initialState: IGameState = {
         hareProgress: 0,
         tortoiseProgress: 0,
         winner: undefined,
-    }
+    };
 
     const reducer = (state: IGameState, action: IAction) => {
         switch (action.type) {
@@ -60,8 +63,14 @@ export const getReducer = (hareStep: () => number, tortoiseStep: () => number) =
                 if (state.winner) {
                     return state;
                 }
-                const hareProgress = Math.min(state.hareProgress + hareStep(), 10);
-                const tortoiseProgress = Math.min(state.tortoiseProgress + tortoiseStep(), 10);
+                const hareProgress = Math.min(
+                    state.hareProgress + hareStep(),
+                    10
+                );
+                const tortoiseProgress = Math.min(
+                    state.tortoiseProgress + tortoiseStep(),
+                    10
+                );
                 const winner = getWinner(hareProgress, tortoiseProgress);
                 return {
                     hareProgress: hareProgress,
@@ -76,7 +85,7 @@ export const getReducer = (hareStep: () => number, tortoiseStep: () => number) =
     };
 
     return reducer;
-}
+};
 
 const getWinner = (
     hareProgress: number,
@@ -97,7 +106,6 @@ const getWinner = (
 
     return winner;
 };
-
 
 /* Custom Hooks */
 
@@ -157,7 +165,7 @@ export function useSyncState<T>(
 }
 
 export function useLog() {
-    const {loggerRef} = useContext(RefContext);
+    const { loggerRef } = useContext(RefContext);
     return (record: IRecord) => {
         loggerRef?.current?.append(record);
     };

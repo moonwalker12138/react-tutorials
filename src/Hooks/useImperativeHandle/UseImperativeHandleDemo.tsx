@@ -6,7 +6,7 @@ import { Billboard } from "./Billboard";
 
 export const UseImperativeHandleDemo = () => {
     return (
-        <PageWrapper >
+        <PageWrapper>
             <Demo />
         </PageWrapper>
     );
@@ -19,16 +19,30 @@ const Demo = () => {
     const billboardRef = useRef<IBillboardRef>(null);
 
     const greeting = (player: IPlayerEntity) => {
-        billboardRef.current?.append({sender: player.character, message: player.greeting, region: RecordRegion.Chat});
-    }
+        billboardRef.current?.append({
+            sender: player.character,
+            message: player.greeting,
+            region: RecordRegion.Chat,
+        });
+    };
 
     return (
         <div className="container">
             <div className="row align-items-center">
                 <div className="col">
                     <div className="d-flex flex-column align-items-start justify-content-around">
-                        <img src={hare.character} alt="" style={{opacity: "0.7", width: "40%"}} onClick={() => greeting(hare)} />
-                        <img src={tortoise.character} alt="" style={{opacity: "0.7", width: "40%"}} onClick={() => greeting(tortoise)}/>
+                        <img
+                            src={hare.character}
+                            alt=""
+                            style={{ opacity: "0.7", width: "40%" }}
+                            onClick={() => greeting(hare)}
+                        />
+                        <img
+                            src={tortoise.character}
+                            alt=""
+                            style={{ opacity: "0.7", width: "40%" }}
+                            onClick={() => greeting(tortoise)}
+                        />
                     </div>
                 </div>
                 <div className="col">

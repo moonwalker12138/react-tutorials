@@ -9,7 +9,7 @@ export const Container: React.FC<IContainer> = ({
     hareRaceTrack,
     tortoiseRaceTrack,
     onForward,
-    onReset
+    onReset,
 }) => {
     return (
         <div className="container">
@@ -25,7 +25,7 @@ export const Container: React.FC<IContainer> = ({
                 ></i>
                 <i
                     className="bi bi-forward"
-                    style={{ fontSize: "4rem"}}
+                    style={{ fontSize: "4rem" }}
                     onClick={onForward}
                 ></i>
             </div>

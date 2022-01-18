@@ -1,6 +1,13 @@
-import React, { createContext, RefObject, useRef } from "react";
+import React, { createContext, RefObject, useRef, useState } from "react";
+// import { PlayerType } from "../Model/Player";
+import { Game } from "../Shared/Game";
 import { IBillboardRef, Billboard } from "./Billboard";
 import { Sidebar } from "./Sidebar";
+
+export enum PlayerType {
+    Hare = "Hare",
+    Tortoise = "Tortoise",
+}
 
 interface IRefContext {
     loggerRef: RefObject<IBillboardRef> | null;
@@ -14,35 +21,49 @@ interface IPlayerConfig {
 
 interface IRaceTrackConfig {
     isStatic: boolean;
-    enableUseMemo: boolean;
-    enableRedundantRenderWarning: boolean,
+    isUseMemoButtonVisible: boolean;
+    isUseCallbackButtonVisible: boolean;
+    enableLogLayout: boolean;
+    enableUseMemo: {
+        [PlayerType.Hare]: boolean;
+        [PlayerType.Tortoise]: boolean;
+    };
+    enableRedundantRenderWarning: boolean;
 }
 
 interface IGameConfig {
+    enableReducer: boolean;
     enableReferee: boolean;
     enableSwitchPlayer: boolean;
-    enableUseCallback: boolean;
+    enableUseCallback: {
+        [PlayerType.Hare]: boolean;
+        [PlayerType.Tortoise]: boolean;
+    };
 }
 
 interface IPageWrapperConfig {
     showBillboard: boolean;
 }
 
-export interface IConfigContext {
+export interface IConfig {
     player: IPlayerConfig;
     raceTrack: IRaceTrackConfig;
     game: IGameConfig;
     pageWrapper: IPageWrapperConfig;
 }
 
-interface IPageWrapperProps {
-    config?: IConfigContext;
+export interface IConfigContext {
+    config: IConfig;
+    setConfig: (config: IConfig) => void;
 }
 
+interface IPageWrapperProps {
+    initialConfig?: IConfig;
+}
 
 export const RefContext = createContext<IRefContext>({ loggerRef: null });
 
-export const DefaultConfig: IConfigContext = {
+export const DefaultConfig: IConfig = {
     player: {
         isTimeConsuming: false,
         enableGreeting: true,
@@ -50,34 +71,57 @@ export const DefaultConfig: IConfigContext = {
     },
     raceTrack: {
         isStatic: false,
-        enableUseMemo: false,
+        isUseMemoButtonVisible: false,
+        isUseCallbackButtonVisible: false,
+        enableLogLayout: false,
+        enableUseMemo: { [PlayerType.Hare]: true, [PlayerType.Tortoise]: true },
         enableRedundantRenderWarning: false,
     },
     game: {
+        enableReducer: true,
         enableReferee: true,
         enableSwitchPlayer: true,
-        enableUseCallback: false,
+        enableUseCallback: {
+            [PlayerType.Hare]: true,
+            [PlayerType.Tortoise]: true,
+        },
     },
     pageWrapper: {
         showBillboard: true,
     },
 };
 
-export const ConfigContext = createContext<IConfigContext>(DefaultConfig);
+export const ConfigContext = createContext<IConfigContext>({
+    config: DefaultConfig,
+    setConfig: () => {},
+});
 
-export const PageWrapper: React.FC<IPageWrapperProps> = ({config=DefaultConfig, children }) => {
+export const PageWrapper: React.FC<IPageWrapperProps> = ({
+    initialConfig = DefaultConfig,
+}) => {
     const loggerRef = useRef<IBillboardRef>(null);
+    const [config, setConfig] = useState(initialConfig);
 
     return (
-        <ConfigContext.Provider value={config}>
+        <ConfigContext.Provider value={{ config, setConfig }}>
             <RefContext.Provider value={{ loggerRef: loggerRef }}>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-auto">
                             <Sidebar />
                         </div>
-                        <div className="col">{children}</div>
-                        <div className="col-4" style={{visibility: config.pageWrapper.showBillboard ? "visible" : "hidden"}}>
+                        <div className="col">
+                            <Game />
+                        </div>
+                        <div
+                            className="col-4"
+                            style={{
+                                visibility: initialConfig.pageWrapper
+                                    .showBillboard
+                                    ? "visible"
+                                    : "hidden",
+                            }}
+                        >
                             <Billboard ref={loggerRef} />
                         </div>
                     </div>
