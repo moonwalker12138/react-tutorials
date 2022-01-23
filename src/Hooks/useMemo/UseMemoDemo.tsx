@@ -1,8 +1,6 @@
-import {
-    IConfig,
-    PageWrapper,
-    PlayerType,
-} from "../../PageWrapper/PageWrapper";
+import { PlayerType } from "../../Model/Player";
+import { IConfig } from "../../PageWrapper/Config";
+import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { UseLayoutEffectConfig } from "../useLayoutEffect/UseLayoutEffectDemo";
 
 export const UseMemoConfig: IConfig = {

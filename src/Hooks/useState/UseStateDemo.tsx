@@ -1,5 +1,6 @@
-import { IConfig, PageWrapper } from "../../PageWrapper/PageWrapper";
+import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { PlayerType } from "../../Model/Player";
+import { IConfig } from "../../PageWrapper/Config";
 
 export const UseStateConfig: IConfig = {
     player: {
@@ -29,6 +30,7 @@ export const UseStateConfig: IConfig = {
     },
     pageWrapper: {
         showBillboard: false,
+        enableUseImperativeHandleMode: false,
     },
 };
 

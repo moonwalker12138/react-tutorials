@@ -1,4 +1,5 @@
-import { IConfig, PageWrapper } from "../../PageWrapper/PageWrapper";
+import { IConfig } from "../../PageWrapper/Config";
+import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { UseRefConfig } from "../useRef/UseRefDemo";
 
 export const UseLayoutEffectConfig: IConfig = {

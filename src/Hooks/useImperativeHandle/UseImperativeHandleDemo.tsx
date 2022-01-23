@@ -1,54 +1,15 @@
-import { useRef } from "react";
-import { Hare, IPlayerEntity, Tortoise } from "../../Model/Player";
-import { IBillboardRef, RecordRegion } from "../../PageWrapper/Billboard";
+import { IConfig } from "../../PageWrapper/Config";
 import { PageWrapper } from "../../PageWrapper/PageWrapper";
-import { Billboard } from "./Billboard";
+import { UseLayoutEffectConfig } from "../useLayoutEffect/UseLayoutEffectDemo";
 
-export const UseImperativeHandleDemo = () => {
-    return (
-        <PageWrapper>
-            <Demo />
-        </PageWrapper>
-    );
+export const UseImperativeHandleConfig: IConfig = {
+    ...UseLayoutEffectConfig,
+    pageWrapper: {
+        ...UseLayoutEffectConfig.pageWrapper,
+        enableUseImperativeHandleMode: true,
+    }
 };
 
-const Demo = () => {
-    const hare = Hare;
-    const tortoise = Tortoise;
-
-    const billboardRef = useRef<IBillboardRef>(null);
-
-    const greeting = (player: IPlayerEntity) => {
-        billboardRef.current?.append({
-            sender: player.character,
-            message: player.greeting,
-            region: RecordRegion.Chat,
-        });
-    };
-
-    return (
-        <div className="container">
-            <div className="row align-items-center">
-                <div className="col">
-                    <div className="d-flex flex-column align-items-start justify-content-around">
-                        <img
-                            src={hare.character}
-                            alt=""
-                            style={{ opacity: "0.7", width: "40%" }}
-                            onClick={() => greeting(hare)}
-                        />
-                        <img
-                            src={tortoise.character}
-                            alt=""
-                            style={{ opacity: "0.7", width: "40%" }}
-                            onClick={() => greeting(tortoise)}
-                        />
-                    </div>
-                </div>
-                <div className="col">
-                    <Billboard ref={billboardRef} />
-                </div>
-            </div>
-        </div>
-    );
+export const UseImperativeHandleDemo = () => {
+    return <PageWrapper initialConfig={UseImperativeHandleConfig} />;
 };

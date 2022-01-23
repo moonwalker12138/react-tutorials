@@ -1,5 +1,5 @@
 import React, { useImperativeHandle } from "react";
-import { useSyncState } from "../Utils";
+import { useSyncState } from "../CustomHooks";
 
 export enum RecordRegion {
     Chat = "Chat",

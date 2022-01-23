@@ -4,14 +4,8 @@ import { Container } from "./Container";
 import { RaceTrack } from "./RaceTrack";
 
 export const Game = () => {
-    // const [enableHareUseCallback, setEnableHareUseCallback] = useState(false);
-    // const toggleHareUseCallback = useCallback(() => setEnableHareUseCallback(!enableHareUseCallback), [enableHareUseCallback]);
-
-    // const [enableTortoiseUseCallback, setEnableTortoiseUseCallback] = useState(false);
-    // const toggleTortoiseCallback = useCallback(() => setEnableTortoiseUseCallback(!enableTortoiseUseCallback), [enableTortoiseUseCallback]);
-
-    const [hare, switchHare] = usePlayerEntity(PlayerType.Hare);
-    const [tortoise, switchTortoise] = usePlayerEntity(PlayerType.Tortoise);
+    const [hare, switchHare, toggleMemoriedSwitchHare] = usePlayerEntity(PlayerType.Hare);
+    const [tortoise, switchTortoise, toggleMemoriedSwitchTortoise] = usePlayerEntity(PlayerType.Tortoise);
 
     const [state, onForward, onReset] = useGameState(
         hare.getStep,
@@ -27,6 +21,7 @@ export const Game = () => {
                     player={hare}
                     progress={state.hareProgress}
                     onSwitchPlayer={switchHare}
+                    toggleUseCallback={toggleMemoriedSwitchHare}
                 />
             }
             tortoiseRaceTrack={
@@ -34,7 +29,7 @@ export const Game = () => {
                     player={tortoise}
                     progress={state.tortoiseProgress}
                     onSwitchPlayer={switchTortoise}
-                    // toggleUseCallback={toggleTortoiseCallback}
+                    toggleUseCallback={toggleMemoriedSwitchTortoise}
                 />
             }
             onForward={onForward}

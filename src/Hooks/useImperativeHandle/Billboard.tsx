@@ -1,7 +1,7 @@
 import React, { useImperativeHandle } from "react";
+import { useSyncState } from "../../CustomHooks";
 import { Hare, IPlayerEntity, Tortoise } from "../../Model/Player";
 import { IRecord, RecordRegion, RecordList } from "../../PageWrapper/Billboard";
-import { useSyncState } from "../../Utils";
 
 export interface IBillboardRef {
     append: (record: IRecord) => void;

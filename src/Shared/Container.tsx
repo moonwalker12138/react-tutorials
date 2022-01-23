@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { ConfigContext } from "../PageWrapper/Config";
+
 interface IContainer {
     hareRaceTrack: JSX.Element;
     tortoiseRaceTrack: JSX.Element;
@@ -11,9 +14,11 @@ export const Container: React.FC<IContainer> = ({
     onForward,
     onReset,
 }) => {
+    const {config} = useContext(ConfigContext);
+
     return (
-        <div className="container">
-            <div className="row row-cols-1 gy-5">
+        <div className="container" style={{visibility: config.pageWrapper.enableUseImperativeHandleMode? "hidden" : "visible"}}>
+            <div className="row row-cols-1 gy-5 mb-3">
                 <div className="col">{hareRaceTrack}</div>
                 <div className="col">{tortoiseRaceTrack}</div>
             </div>

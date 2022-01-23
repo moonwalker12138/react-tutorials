@@ -1,4 +1,5 @@
-import { IConfig, PageWrapper } from "../../PageWrapper/PageWrapper";
+import { IConfig } from "../../PageWrapper/Config";
+import { PageWrapper } from "../../PageWrapper/PageWrapper";
 import { UseStateConfig } from "../useState/UseStateDemo";
 
 export const UseReducerConfig: IConfig = {

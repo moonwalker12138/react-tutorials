@@ -1,57 +1,34 @@
-import { useContext, useMemo, useRef, useState } from "react";
-import { IPlayerEntity, PlayerType } from "..//Model/Player";
+import { useContext, useRef } from "react";
+import { IPlayerEntity } from "..//Model/Player";
 import { ProgressBar } from "./ProgressBar";
 import React from "react";
 import {
     useLogLayout,
-    usePlayerElement,
+    useMemoriedValue,
     useRaceTrackRedundantRenderWarning,
     useUpdatePosition,
 } from "../CustomHooks";
-import { ConfigContext, DefaultConfig } from "../PageWrapper/PageWrapper";
+import { ConfigContext } from "../PageWrapper/Config";
+import { Player } from "./Player";
 
 interface IRaceTrackProps {
     progress: number;
     player: IPlayerEntity;
     onSwitchPlayer?: () => void;
+    toggleUseCallback?: () => void;
 }
 
 export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(
-    ({ progress, player, onSwitchPlayer }) => {
-        const { config, setConfig } = useContext(ConfigContext);
+    ({ progress, player, onSwitchPlayer, toggleUseCallback }) => {
+        const { config } = useContext(ConfigContext);
+
         const progressBarRef = useRef<HTMLDivElement>(null);
         const playerRef = useRef<HTMLImageElement>(null);
 
-        const playerElement = usePlayerElement(player);
-        useLogLayout(progressBarRef, playerRef, progress, player);
+        const [playerElement, toggleMemoriedPlayerElement] = useMemoriedValue<JSX.Element>(() => <Player {...player} />, [player]);
+        useLogLayout(progressBarRef, progress, player);
         useUpdatePosition(progressBarRef, playerRef, progress);
         useRaceTrackRedundantRenderWarning(progress, player);
-
-        const toggleUseMemo = () =>
-            setConfig({
-                ...config,
-                raceTrack: {
-                    ...config.raceTrack,
-                    enableUseMemo: {
-                        ...config.raceTrack.enableUseMemo,
-                        [player.type]:
-                            !config.raceTrack.enableUseMemo[player.type],
-                    },
-                },
-            });
-
-        const toggleUseCallback = () =>
-            setConfig({
-                ...config,
-                game: {
-                    ...config.game,
-                    enableUseCallback: {
-                        ...config.game.enableUseCallback,
-                        [player.type]:
-                            !config.game.enableUseCallback[player.type],
-                    },
-                },
-            });
 
         return (
             <>
@@ -85,7 +62,7 @@ export const RaceTrack: React.FC<IRaceTrackProps> = React.memo(
                             type="checkbox"
                             role="switch"
                             className="form-check-input"
-                            onClick={toggleUseMemo}
+                            onClick={toggleMemoriedPlayerElement}
                         />
                         <label
                             htmlFor=""

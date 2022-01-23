@@ -10,8 +10,8 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { RecordRegion } from "./PageWrapper/Billboard";
-import { ActionType, getReducer, useLog } from "./Utils";
+import { IRecord, RecordRegion } from "./PageWrapper/Billboard";
+import { ActionType, getReducer } from "./Utils";
 import RefereeImg from "./Images/Referee.png";
 import {
     Hare,
@@ -21,8 +21,8 @@ import {
     Tortoise,
     Tortoise2,
 } from "./Model/Player";
-import { ConfigContext } from "./PageWrapper/PageWrapper";
-import { Player } from "./Shared/Player";
+import {RefContext } from "./PageWrapper/PageWrapper";
+import {ConfigContext} from "./PageWrapper/Config";
 
 export enum Winner {
     Hare = "Hare",
@@ -34,6 +34,59 @@ export interface IGameState {
     hareProgress: number;
     tortoiseProgress: number;
     winner?: Winner;
+}
+
+export function useForceUpdate() {
+    const [value, setValue] = useState(0);
+    useDebugValue(value);
+    return () => setValue(value + 1);
+}
+
+// export function useMountEffect(effect: EffectCallback) {
+//     useEffect(() => {
+//         effect();
+//     }, []);
+// }
+
+// export function useUpdateEffect(effect: EffectCallback, deps?: DependencyList) {
+//     const isInitialMount = useRef(true);
+
+//     useEffect(() => {
+//         if (isInitialMount.current) {
+//             isInitialMount.current = false;
+//         } else {
+//             effect();
+//         }
+//     }, deps);
+// }
+
+// export function useUnmountEffect(effect: () => void) {
+//     useEffect(() => {
+//         return () => effect();
+//     }, []);
+// }
+
+export function useSyncState<T>(
+    initValue: T
+): [React.RefObject<T>, (newValue: T) => void] {
+    const forceUpdate = useForceUpdate();
+
+    const ref = useRef<T>(initValue);
+    const setValue = (newValue: T) => {
+        ref.current = newValue;
+        forceUpdate();
+    };
+
+    useDebugValue(ref.current);
+
+    return [ref, setValue];
+}
+
+export function useLog() {
+    const { loggerRef } = useContext(RefContext);
+    return (record: IRecord) => {
+        loggerRef?.current?.append(record);
+    };
 }
 
 export function useReferee(
@@ -67,7 +120,6 @@ export function useReferee(
 
 export function useLogLayout(
     progressBarRef: React.RefObject<HTMLDivElement>,
-    playerRef: React.RefObject<HTMLDivElement>,
     progress: number,
     player: IPlayerEntity
 ) {
@@ -139,12 +191,14 @@ export function useRaceTrackRedundantRenderWarning(
 
     const prevProgressRef = useRef<number>();
     const prevPlayerRef = useRef<IPlayerEntity>();
+    const prevEnableUseCallback = useRef<boolean>();
 
     useEffect(() => {
         if (!config.raceTrack.enableRedundantRenderWarning) return;
         if (
             progress === prevProgressRef.current &&
-            player === prevPlayerRef.current
+            player === prevPlayerRef.current &&
+            config.game.enableUseCallback[player.type] === prevEnableUseCallback.current
         ) {
             const message = "Redundant rendering";
             const region =
@@ -155,6 +209,7 @@ export function useRaceTrackRedundantRenderWarning(
         }
         prevProgressRef.current = progress;
         prevPlayerRef.current = player;
+        prevEnableUseCallback.current = config.game.enableUseCallback[player.type];
     });
 }
 
@@ -172,7 +227,7 @@ export function useGreeting(character: string, greeting: string, name: string) {
             message: greeting,
             region: RecordRegion.Chat,
         });
-    }, [name]);
+    }, [name, character, greeting]);
 }
 
 export function usePlayerRedundantRenderWarning(
@@ -269,10 +324,10 @@ export function useGameState(
 
 export function usePlayerEntity(
     type: PlayerType
-): [IPlayerEntity, (() => void) | undefined] {
+): [IPlayerEntity, (() => void) | undefined, any] {
     const { config } = useContext(ConfigContext);
     useDebugValue(
-        `config.game.enableSwitchPlayer: ${config.game.enableSwitchPlayer}\nconfig.game.enableUseCallback.${type}: ${config.game.enableUseCallback[type]}`
+        `config.game.enableSwitchPlayer: ${config.game.enableSwitchPlayer}`
     );
 
     const initPlayer = type === PlayerType.Hare ? Hare : Tortoise;
@@ -285,37 +340,37 @@ export function usePlayerEntity(
             : player === Tortoise
             ? Tortoise2
             : Tortoise;
+    
+    // const switchPlayer = () => setPlayer(nextPlayer);
+    // const memoriedSwitchPlayer = useCallback(switchPlayer, [nextPlayer]);
+    const [switchPlayer, toggleMemoriedSwitchPlayer] = useMemoriedCallback(() => setPlayer(nextPlayer), [nextPlayer]);
+    const memoriedToggle = useCallback(toggleMemoriedSwitchPlayer, []);
 
-    const switchPlayer = () => setPlayer(nextPlayer);
-    const memoriedSwitchPlayer = useCallback(switchPlayer, [nextPlayer]);
-    const onSwitchPlayer = config.game.enableSwitchPlayer
-        ? config.game.enableUseCallback[type]
-            ? memoriedSwitchPlayer
-            : switchPlayer
-        : undefined;
+    const onSwitchPlayer = config.game.enableSwitchPlayer ?  switchPlayer : undefined;
 
-    return [player, onSwitchPlayer];
+    return [player, onSwitchPlayer, memoriedToggle];
 }
 
-export function usePlayerElement(player: IPlayerEntity) {
-    const { config } = useContext(ConfigContext);
-    useDebugValue(
-        `config.raceTrack.enableUseMemo.${player.type}: ${
-            config.raceTrack.enableUseMemo[player.type]
-        }`
-    );
+export function useToggle(init: boolean): [boolean, () => void] {
+    const [value, setValue] = useState(init);
+    const toggleValue = () => setValue(!value);
+    return [value, toggleValue];
+}
 
-    const memoriedPlayerElement = useMemo(
-        () => <Player {...player} />,
-        [player]
-    );
-    const playerElement = config.raceTrack.enableUseMemo[player.type] ? (
-        memoriedPlayerElement
-    ) : (
-        <Player {...player} />
-    );
+export function useMemoriedCallback(cb: any, deps: DependencyList) {
+    const [isUseCallbackEnabled, toggleUseCallback] = useToggle(false);
+    const memoriedCallback = useCallback(cb, deps);
+    const callback = isUseCallbackEnabled ? memoriedCallback : cb;
 
-    return playerElement;
+    return [callback, toggleUseCallback];
+}
+
+export function useMemoriedValue<T>(factory: () => T, deps: DependencyList): [T, () => void] {
+    const [isUseMemoEnabled, toggleUseMemo] = useToggle(false);
+    const memoriedValue = useMemo(factory, deps);
+    const value = isUseMemoEnabled ? memoriedValue : factory();
+
+    return [value, toggleUseMemo];
 }
 
 export function useRecord(
