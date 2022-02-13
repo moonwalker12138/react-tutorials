@@ -1,9 +1,10 @@
 import React, { createContext, RefObject, useRef, useState } from "react";
 import { Game } from "../Shared/Game";
 import { IBillboardRef, Billboard } from "./Billboard";
-import { Code } from "./Code";
+import { CodeTrigger } from "./CodeWrapper/CodeTrigger";
 import { ConfigContext, DefaultConfig, IConfig } from "./Config";
 import { Sidebar } from "./Sidebar";
+import { SlideTrigger } from "./SliderWrapper.html/SlideTrigger";
 
 interface IRefContext {
     loggerRef: RefObject<IBillboardRef> | null;
@@ -31,7 +32,8 @@ export const PageWrapper: React.FC<IPageWrapperProps> = ({
                         </div>
                         <div className="col">
                             <Game />
-                            <Code />
+                            <CodeTrigger />
+                            <SlideTrigger />
                         </div>
                         <div
                             className="col-4"

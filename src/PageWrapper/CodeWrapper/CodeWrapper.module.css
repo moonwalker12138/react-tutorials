@@ -1,0 +1,14 @@
+.codeWrapper {
+	background-image: linear-gradient(transparent 50%, rgba(0, 0, 0, .2) 50%);
+	background-size: auto 3em;
+	background-origin: content-box;
+	background-attachment: local;	/* Make the background stripes scroll with content */
+	line-height: 1.5;
+	padding: 1.5em;
+	white-space: pre;
+	font-size: 16px;
+	tab-size: 2;
+	max-height: 80vh;
+	border-radius: 1em;
+	overflow: auto;
+}
